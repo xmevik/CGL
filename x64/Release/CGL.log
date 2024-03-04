@@ -1,5 +1,0 @@
-﻿  Table.cpp
-App.obj : error LNK2001: неразрешенный внешний символ "public: __cdecl Graphics::Graphics(struct HWND__ *)" (??0Graphics@@QEAA@PEAUHWND__@@@Z).
-App.obj : error LNK2001: неразрешенный внешний символ "public: __cdecl Integral::Integral(struct HWND__ *)" (??0Integral@@QEAA@PEAUHWND__@@@Z).
-App.obj : error LNK2001: неразрешенный внешний символ "public: __cdecl Expression::Expression(struct HWND__ *)" (??0Expression@@QEAA@PEAUHWND__@@@Z).
-H:\Projects\Test's\CGL\x64\Release\CGL.exe : fatal error LNK1120: неразрешенных внешних элементов: 3
