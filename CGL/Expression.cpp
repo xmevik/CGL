@@ -15,7 +15,7 @@ Expression::Expression(HWND mnHwnd, HINSTANCE hInstance)
 	if (this->ExpressionWnd == INVALID_HANDLE_VALUE)
 		throw runtime_error("Unable to create main window"s);
 }
-
+// TODO: Not implemented
 HWND Expression::GetHWND() const
 {
 	return this->ExpressionWnd;

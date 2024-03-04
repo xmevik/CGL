@@ -16,7 +16,7 @@ class ScreenSaver
 		HWND mnWnd, ScreenSaverWnd, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
-
+		// TODO: Not implemented
 	public:
 		explicit ScreenSaver(HWND mnWnd, HINSTANCE hInstance);
 

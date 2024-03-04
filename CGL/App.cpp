@@ -208,7 +208,8 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 	{
 		case App::ButtonsInteraction::TableClicked:
 		{
-			Table* table = new Table(hwnd, this->hInstance);
+			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+			Table* table = new Table(hwnd, hInstance);
 			HWND WND = table->GetHWND();
 
 			ShowWindow(WND, SW_SHOWDEFAULT);
@@ -217,7 +218,8 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::GraphicsClicked:
 		{
-			Graphics* graphics = new Graphics(hwnd, this->hInstance);
+			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+			Graphics* graphics = new Graphics(hwnd, hInstance);
 			HWND WND = graphics->GetHWND();
 
 			ShowWindow(WND, SW_SHOWDEFAULT);
@@ -226,25 +228,22 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::ExpressionClicked:
 		{
-			Expression* expression = new Expression(hwnd, this->hInstance);
-			HWND WND = expression->GetHWND();
-
-			ShowWindow(WND, SW_SHOWDEFAULT);
-			UpdateWindow(WND);
+			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+			Expression* expression = new Expression(hwnd, hInstance);
+			expression->ShowHWND(SW_SHOWDEFAULT);
 			return TRUE;
 		}
 		case App::ButtonsInteraction::IntegralClicked:
 		{
-			Integral* integral = new Integral(hwnd, this->hInstance);
-			HWND WND = integral->GetHWND();
-
-			ShowWindow(WND, SW_SHOWDEFAULT);
-			UpdateWindow(WND);
+			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+			Integral* integral = new Integral(hwnd, hInstance);
+			integral->ShowHWND(SW_SHOWDEFAULT);
 			return TRUE;
 		}
 		case App::ButtonsInteraction::ScreenSaverClicked:
 		{
-			Graphics* screenSaver = new Graphics(hwnd, this->hInstance);
+			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+			Graphics* screenSaver = new Graphics(hwnd, hInstance);
 			HWND WND = screenSaver->GetHWND();
 
 			ShowWindow(WND, SW_SHOWDEFAULT);

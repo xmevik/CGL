@@ -17,7 +17,7 @@ class Table
 		HWND mnWnd, TableWnd, hListView, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
-
+		// TODO: Not implemented
 	public:
 		explicit Table(HWND mnWnd, HINSTANCE hInstance);
 

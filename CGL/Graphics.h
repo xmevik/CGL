@@ -17,7 +17,7 @@ class Graphics
 		HWND mnWnd, GraphicsWnd, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
-
+		// TODO: Not implemented
 	public:
 		explicit Graphics(HWND mnHwnd, HINSTANCE hInstance);
 

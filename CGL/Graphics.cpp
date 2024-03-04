@@ -15,7 +15,7 @@ Graphics::Graphics(HWND mnHwnd, HINSTANCE hInstance)
 	if (this->GraphicsWnd == INVALID_HANDLE_VALUE)
 		throw runtime_error("Unable to create main window"s);
 }
-
+// TODO: Not implemented
 HWND Graphics::GetHWND() const
 {
 	return this->GraphicsWnd;

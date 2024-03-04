@@ -15,7 +15,7 @@ ScreenSaver::ScreenSaver(HWND mnHwnd, HINSTANCE hInstance)
 	if (this->ScreenSaverWnd == INVALID_HANDLE_VALUE)
 		throw runtime_error("Unable to create main window"s);
 }
-
+// TODO: Not implemented
 HWND ScreenSaver::GetHWND() const
 {
 	return this->ScreenSaverWnd;

@@ -17,11 +17,11 @@ class Expression
 		HWND mnWnd, ExpressionWnd,  GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
-
+		// TODO: Not implemented
 	public:
-		explicit Expression(HWND mnWnd, HINSTANCE hInstance);
+		explicit Expression(HWND &mnWnd, HINSTANCE &hInstance, WNDCLASSEX &scWnd);
 
-		HWND GetHWND() const;
+		HWND ShowHWND(int nCmdShow) const;
 
 	private:
 		LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

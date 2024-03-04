@@ -15,7 +15,7 @@ Table::Table(HWND mnHwnd, HINSTANCE hInstance)
 	if (this->TableWnd == INVALID_HANDLE_VALUE)
 		throw runtime_error("Unable to create main window"s);
 }
-
+// TODO: Not implemented
 HWND Table::GetHWND() const
 {
 	return this->TableWnd;

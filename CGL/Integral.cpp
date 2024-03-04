@@ -1,14 +1,14 @@
 #include "Integral.h"
 
-Integral::Integral(HWND mnHwnd, HINSTANCE hInstance)
+Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance, WNDCLASSEX& scWnd)
 {
 	this->mnWnd = mnHwnd;
 	this->hInstance = hInstance;
 
 	this->IntegralWnd = CreateWindowW(this->ClassName.c_str(), this->AppName.c_str(),
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		(GetSystemMetrics(SM_CXSCREEN) - this->widht) / 2u,
-		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
 		this->widht, this->height,
 		nullptr, nullptr, this->hInstance, this);
 
@@ -16,7 +16,8 @@ Integral::Integral(HWND mnHwnd, HINSTANCE hInstance)
 		throw runtime_error("Unable to create main window"s);
 }
 
-HWND Integral::GetHWND() const
+void Integral::ShowHWND(int nCmdShow) const
 {
-	return this->IntegralWnd;
+	ShowWindow(this->IntegralWnd, nCmdShow);
+	UpdateWindow(this->IntegralWnd);
 }

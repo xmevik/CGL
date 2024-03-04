@@ -18,11 +18,11 @@ class Integral
 		HINSTANCE hInstance;
 
 	public:
-		explicit Integral(HWND mnHwnd, HINSTANCE hInstance);
+		explicit Integral(HWND& mnWnd, HINSTANCE& hInstance, WNDCLASSEX& scWnd);
 
-		HWND GetHWND() const;
+		void ShowHWND(int nCmdShow) const;
 
 	private:
-		LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		LRESULT CALLBACK IntegralProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 
