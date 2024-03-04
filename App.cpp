@@ -217,7 +217,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::GraphicsClicked:
 		{
-			Graphics* graphics = new Graphics(hwnd);
+			Graphics* graphics = new Graphics(hwnd, this->hInstance);
 			HWND WND = graphics->GetHWND();
 
 			ShowWindow(WND, SW_SHOWDEFAULT);
@@ -226,7 +226,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::ExpressionClicked:
 		{
-			Expression* expression = new Expression(hwnd);
+			Expression* expression = new Expression(hwnd, this->hInstance);
 			HWND WND = expression->GetHWND();
 
 			ShowWindow(WND, SW_SHOWDEFAULT);
@@ -235,7 +235,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::IntegralClicked:
 		{
-			Integral* integral = new Integral(hwnd);
+			Integral* integral = new Integral(hwnd, this->hInstance);
 			HWND WND = integral->GetHWND();
 
 			ShowWindow(WND, SW_SHOWDEFAULT);
@@ -244,7 +244,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::ScreenSaverClicked:
 		{
-			Graphics* screenSaver = new Graphics(hwnd);
+			Graphics* screenSaver = new Graphics(hwnd, this->hInstance);
 			HWND WND = screenSaver->GetHWND();
 
 			ShowWindow(WND, SW_SHOWDEFAULT);

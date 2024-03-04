@@ -11,14 +11,16 @@ using namespace std;
 class ScreenSaver
 {
 	public:
-		const wstring ClassName{ L"ScreenSaverWndClass" };
 	private:
-		HWND mnWnd, ScreenSaverWnd;
+		const wstring ClassName{ L"ScreenSaverWndClass" }, AppName{ L"Заставка экрана"};
+		HWND mnWnd, ScreenSaverWnd, GoBackButton;
+		UINT widht{ 500 }, height{ 500 };
+		HINSTANCE hInstance;
 
 	public:
-		explicit ScreenSaver(HWND mnWnd);
+		explicit ScreenSaver(HWND mnWnd, HINSTANCE hInstance);
 
-		HWND GetHWND();
+		HWND GetHWND() const;
 
 	private:
 		LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

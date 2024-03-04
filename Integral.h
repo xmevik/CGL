@@ -11,14 +11,16 @@ using namespace std;
 class Integral
 {
 	public:
-		const wstring ClassName{ L"IntegralWndClass" };
 	private:
-		HWND mnWnd, IntegralWnd;
+		const wstring ClassName{ L"IntegralWndClass" }, AppName{ L"Вычисление интеграла"};
+		HWND mnWnd, IntegralWnd, GoBackButton;
+		UINT widht{ 500 }, height{ 500 };
+		HINSTANCE hInstance;
 
 	public:
-		explicit Integral(HWND mnWnd);
+		explicit Integral(HWND mnHwnd, HINSTANCE hInstance);
 
-		HWND GetHWND();
+		HWND GetHWND() const;
 
 	private:
 		LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

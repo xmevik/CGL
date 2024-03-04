@@ -11,14 +11,17 @@ using namespace std;
 class Graphics
 {
 	public:
-		const wstring ClassName{ L"GraphicsWndClass" };
+
 	private:
-		HWND mnWnd, GraphicsWnd;
+		const wstring ClassName{ L"GraphicsWndClass" }, AppName{ L"Графики функций"};
+		HWND mnWnd, GraphicsWnd, GoBackButton;
+		UINT widht{ 500 }, height{ 500 };
+		HINSTANCE hInstance;
 
 	public:
-		explicit Graphics(HWND mnWnd);
+		explicit Graphics(HWND mnHwnd, HINSTANCE hInstance);
 
-		HWND GetHWND();
+		HWND GetHWND() const;
 
 	private:
 		LRESULT CALLBACK GraphicsProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
