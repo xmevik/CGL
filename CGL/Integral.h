@@ -18,7 +18,7 @@ class Integral
 		HINSTANCE hInstance;
 
 	public:
-		explicit Integral(HWND& mnWnd, HINSTANCE& hInstance, WNDCLASSEX& scWnd);
+		explicit Integral(HWND& mnWnd, HINSTANCE& hInstance);
 
 		void ShowHWND(int nCmdShow) const;
 

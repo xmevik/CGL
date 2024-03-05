@@ -10,6 +10,12 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <stdexcept>
 #include <string>
 
+#include "Table.h"
+#include "Expression.h"
+#include "Graphics.h"
+#include "Integral.h"
+#include "ScreenSaver.h"
+
 using namespace std;
 
 class App
@@ -29,6 +35,11 @@ class App
 	private:
 		const wstring AppName{ L"CGL" }, ClassName{ L"MainWndClass" };
 		HWND Wnd{}, TableButton{}, GraphicsButton{}, ExpressionButton{}, IntegralButton{}, ScreenSaverButton{}, AboutButton{}, ExitButton{};
+		Table* table;
+		Graphics* graphics;
+		Expression* expression;
+		Integral* integral;
+		ScreenSaver* screenSaver;
 		HINSTANCE hInstance;
 		const UINT buttonWindowWidht{ 200 }, buttonWindowHeight{ 30 };
 		UINT widht{ 500 }, height{ 500 };

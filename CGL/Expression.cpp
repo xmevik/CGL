@@ -1,14 +1,14 @@
 #include "Expression.h"
 
-Expression::Expression(HWND mnHwnd, HINSTANCE hInstance)
+Expression::Expression(HWND &mnHwnd, HINSTANCE &hInstance)
 {
 	this->mnWnd = mnHwnd;
 	this->hInstance = hInstance;
 
 	this->ExpressionWnd = CreateWindowW(this->ClassName.c_str(), this->AppName.c_str(),
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		(GetSystemMetrics(SM_CXSCREEN) - this->widht) / 2u,
-		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
 		this->widht, this->height,
 		nullptr, nullptr, this->hInstance, this);
 
@@ -16,7 +16,8 @@ Expression::Expression(HWND mnHwnd, HINSTANCE hInstance)
 		throw runtime_error("Unable to create main window"s);
 }
 // TODO: Not implemented
-HWND Expression::GetHWND() const
+void Expression::ShowHWND(int nCmdShow) const
 {
-	return this->ExpressionWnd;
+	ShowWindow(this->ExpressionWnd, nCmdShow);
+	UpdateWindow(this->ExpressionWnd);
 }

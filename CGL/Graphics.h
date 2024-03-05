@@ -21,7 +21,7 @@ class Graphics
 	public:
 		explicit Graphics(HWND mnHwnd, HINSTANCE hInstance);
 
-		HWND GetHWND() const;
+		void ShowHWND(int nCmdShow) const;
 
 	private:
 		LRESULT CALLBACK GraphicsProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

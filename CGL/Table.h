@@ -21,7 +21,7 @@ class Table
 	public:
 		explicit Table(HWND mnWnd, HINSTANCE hInstance);
 
-		HWND GetHWND() const;
+		void ShowHWND(int nCmdShow) const;
 
 	private:
 		LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

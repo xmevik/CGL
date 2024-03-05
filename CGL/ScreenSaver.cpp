@@ -7,8 +7,8 @@ ScreenSaver::ScreenSaver(HWND mnHwnd, HINSTANCE hInstance)
 
 	this->ScreenSaverWnd = CreateWindowW(this->ClassName.c_str(), this->AppName.c_str(),
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		(GetSystemMetrics(SM_CXSCREEN) - this->widht) / 2u,
-		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
 		this->widht, this->height,
 		nullptr, nullptr, this->hInstance, this);
 
@@ -16,7 +16,8 @@ ScreenSaver::ScreenSaver(HWND mnHwnd, HINSTANCE hInstance)
 		throw runtime_error("Unable to create main window"s);
 }
 // TODO: Not implemented
-HWND ScreenSaver::GetHWND() const
+void ScreenSaver::ShowHWND(int nCmdShow) const
 {
-	return this->ScreenSaverWnd;
+	ShowWindow(this->ScreenSaverWnd, nCmdShow);
+	UpdateWindow(this->ScreenSaverWnd);
 }

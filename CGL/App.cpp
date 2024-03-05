@@ -22,7 +22,7 @@ App::App(HINSTANCE hInstance)
 	{
 		string exptData = e.what();
 
-		MessageBox(nullptr, wstring(begin(exptData), end(exptData)).c_str(), L"Ошибка", MB_ICONERROR | MB_OK);
+		MessageBoxW(nullptr, wstring(begin(exptData), end(exptData)).c_str(), L"Ошибка", MB_ICONERROR | MB_OK);
 		ExitProcess(EXIT_FAILURE);
 	}
 }
@@ -33,7 +33,7 @@ App::~App()
 
 int App::Run()
 {
-	HACCEL hAccelTable = LoadAcceleratorsW(this->hInstance, nullptr);
+	HACCEL hAccelTable = LoadAcceleratorsW(this->hInstance, L"nullptr");
 
 	MSG _msg{};
 
@@ -56,7 +56,7 @@ void App::initNativeWindowObj()
 {
 	using std::runtime_error;
 
-	WNDCLASSEX mainClass = { sizeof(WNDCLASSEX) };
+	WNDCLASSEXW mainClass = { sizeof(WNDCLASSEXW) };
 
 	mainClass.cbClsExtra = 0;
 	mainClass.cbWndExtra = 0;
@@ -70,10 +70,10 @@ void App::initNativeWindowObj()
 	mainClass.lpszMenuName = nullptr;
 	mainClass.style = 0;
 
-	if (!RegisterClassEx(&mainClass))
+	if (!RegisterClassExW(&mainClass))
 		throw runtime_error("Unable to register main window class"s);
 
-	this->Wnd = CreateWindowW(  this->ClassName.c_str(), this->AppName.c_str(),
+	this->Wnd = CreateWindowExW(0l,  this->ClassName.c_str(), this->AppName.c_str(),
 								WS_OVERLAPPEDWINDOW | WS_VISIBLE,
 								(GetSystemMetrics(SM_CXSCREEN) - this->widht) / 2u,
 								(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
@@ -96,38 +96,38 @@ void App::createNativeWindowControls()
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 1 + 5, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::GraphicsClicked), nullptr, nullptr);
 
-	this->ExpressionButton = CreateWindow(L"button", L"3. Уравнение", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->ExpressionButton = CreateWindowW(L"button", L"3. Уравнение", WS_VISIBLE | WS_CHILD | ES_CENTER, 
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 2 + 10, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ExpressionClicked), nullptr, nullptr);
 
-	this->IntegralButton = CreateWindow(L"button", L"4. Интеграл", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->IntegralButton = CreateWindowW(L"button", L"4. Интеграл", WS_VISIBLE | WS_CHILD | ES_CENTER, 
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 3 + 15, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::IntegralClicked), nullptr, nullptr);
 
-	this->ScreenSaverButton = CreateWindow(L"button", L"5. Заставка", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->ScreenSaverButton = CreateWindowW(L"button", L"5. Заставка", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 4 + 20, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ScreenSaverClicked), nullptr, nullptr);
 
-	this->AboutButton = CreateWindow(L"button", L"6. Об авторе", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->AboutButton = CreateWindowW(L"button", L"6. Об авторе", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 5 + 25, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::AboutClicked), nullptr, nullptr);
 
-	this->ExitButton = CreateWindow(L"button", L"Выход", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->ExitButton = CreateWindowW(L"button", L"Выход", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 6 + 30, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ExitClicked), nullptr, nullptr);
 
 	if (!this->TableButton || !this->GraphicsButton || !this->ExpressionButton || !this->IntegralButton || !this->ScreenSaverButton || !this->AboutButton || !this->ExitButton)
 		throw runtime_error("Error, can't create some of the button");
 
-	HFONT hFont = CreateFont(18, 0, 0, 0, FW_REGULAR, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Aldrich");
+	HFONT hFont = CreateFontW(18, 0, 0, 0, FW_REGULAR, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Aldrich");
 
-	SendMessage(this->TableButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->GraphicsButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->ExpressionButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->IntegralButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->ScreenSaverButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->AboutButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->ExitButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	SendMessageW(this->TableButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	SendMessageW(this->GraphicsButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	SendMessageW(this->ExpressionButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	SendMessageW(this->IntegralButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	SendMessageW(this->ScreenSaverButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	SendMessageW(this->AboutButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	SendMessageW(this->ExitButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
 }
 
 LRESULT CALLBACK App::applicationProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -185,7 +185,7 @@ LRESULT CALLBACK App::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		}
 		case WM_CLOSE:
 		{
-			if (MessageBox(hwnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
+			if (MessageBoxW(hwnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
 				DestroyWindow(hwnd);
 
 			return EXIT_SUCCESS;
@@ -210,10 +210,10 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		{
 			if (this->table == nullptr)
 			{
-				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				HINSTANCE hInstance = GetModuleHandleW(NULL);
 				this->table = new Table(hwnd, hInstance);
 			}
-			this->table->ShowHWND();
+			this->table->ShowHWND(SW_SHOWDEFAULT);
 
 			return TRUE;
 		}
@@ -221,7 +221,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		{
 			if (this->graphics == nullptr)
 			{
-				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				HINSTANCE hInstance = GetModuleHandleW(NULL);
 				this->graphics = new Graphics(hwnd, hInstance);
 			}
 			this->graphics->ShowHWND(SW_SHOWDEFAULT);
@@ -232,7 +232,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		{
 			if (this->expression == nullptr)
 			{
-				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				HINSTANCE hInstance = GetModuleHandleW(NULL);
 				this->expression = new Expression(hwnd, hInstance);
 			}
 			this->expression->ShowHWND(SW_SHOWDEFAULT);
@@ -243,7 +243,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		{
 			if (this->integral == nullptr)
 			{
-				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				HINSTANCE hInstance = GetModuleHandleW(NULL);
 				this->integral = new Integral(hwnd, hInstance);
 			}
 			this->integral->ShowHWND(SW_SHOWDEFAULT);
@@ -254,7 +254,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		{
 			if (this->screenSaver == nullptr)
 			{
-				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				HINSTANCE hInstance = GetModuleHandleW(NULL);
 				this->screenSaver = new ScreenSaver(hwnd, hInstance);
 			}
 			this->screenSaver->ShowHWND(SW_SHOWDEFAULT);
@@ -263,12 +263,12 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::AboutClicked:
 		{
-			DialogBoxW(nullptr, MAKEINTRESOURCE(IDD_ABOUTBOX), hwnd, AboutProc);
+			DialogBoxW(nullptr, MAKEINTRESOURCEW(IDD_ABOUTBOX), hwnd, AboutProc);
 			return TRUE;
 		}
 		case App::ButtonsInteraction::ExitClicked:
 		{
-			if (MessageBox(hwnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
+			if (MessageBoxW(hwnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
 				DestroyWindow(hwnd);
 
 			return EXIT_SUCCESS;

@@ -1,6 +1,6 @@
 #include "Integral.h"
 
-Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance, WNDCLASSEX& scWnd)
+Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance)
 {
 	this->mnWnd = mnHwnd;
 	this->hInstance = hInstance;

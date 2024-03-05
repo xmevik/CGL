@@ -19,9 +19,9 @@ class Expression
 		HINSTANCE hInstance;
 		// TODO: Not implemented
 	public:
-		explicit Expression(HWND &mnWnd, HINSTANCE &hInstance, WNDCLASSEX &scWnd);
+		explicit Expression(HWND &mnWnd, HINSTANCE &hInstance);
 
-		HWND ShowHWND(int nCmdShow) const;
+		void ShowHWND(int nCmdShow) const;
 
 	private:
 		LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
