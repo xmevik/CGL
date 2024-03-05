@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <Windows.h>
 
@@ -13,7 +13,7 @@ class Table
 	public:
 
 	private:
-		const wstring ClassName{ L"TableWndClass" }, AppName{ L"Таблица"};
+		const wstring ClassName{ L"TableWndClass" }, AppName{ L"РўР°Р±Р»РёС†Р°"};
 		HWND mnWnd, TableWnd, hListView, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;

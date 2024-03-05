@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <Windows.h>
 
@@ -13,7 +13,7 @@ class Graphics
 	public:
 
 	private:
-		const wstring ClassName{ L"GraphicsWndClass" }, AppName{ L"Графики функций"};
+		const wstring ClassName{ L"GraphicsWndClass" }, AppName{ L"Р“СЂР°С„РёРєРё С„СѓРЅРєС†РёР№"};
 		HWND mnWnd, GraphicsWnd, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
