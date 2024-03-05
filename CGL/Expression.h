@@ -1,4 +1,4 @@
-п»ї#pragma once
+#pragma once
 
 #include <Windows.h>
 
@@ -13,7 +13,7 @@ class Expression
 	public:
 
 	private:
-		const wstring ClassName{ L"ExpressionWndClass" }, AppName{ L"Р’С‹СЂР°Р¶РµРЅРёРµ" };
+		const wstring ClassName{ L"ExpressionWndClass" }, AppName{ L"Выражение" };
 		HWND mnWnd, ExpressionWnd,  GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;

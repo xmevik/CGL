@@ -1,4 +1,4 @@
-п»ї#pragma once
+#pragma once
 
 #include <Windows.h>
 
@@ -12,7 +12,7 @@ class Integral
 {
 	public:
 	private:
-		const wstring ClassName{ L"IntegralWndClass" }, AppName{ L"Р’С‹С‡РёСЃР»РµРЅРёРµ РёРЅС‚РµРіСЂР°Р»Р°"};
+		const wstring ClassName{ L"IntegralWndClass" }, AppName{ L"Вычисление интеграла"};
 		HWND mnWnd, IntegralWnd, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
@@ -24,7 +24,5 @@ class Integral
 
 	private:
 		LRESULT CALLBACK IntegralProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-		void initNativeObj();
-		void createWindowControls();
 };
 

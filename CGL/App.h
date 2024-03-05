@@ -29,11 +29,6 @@ class App
 	private:
 		const wstring AppName{ L"CGL" }, ClassName{ L"MainWndClass" };
 		HWND Wnd{}, TableButton{}, GraphicsButton{}, ExpressionButton{}, IntegralButton{}, ScreenSaverButton{}, AboutButton{}, ExitButton{};
-		Table* table = nullptr;
-		Graphics* graphics = nullptr;
-		Expression* expression = nullptr;
-		Integral* integral = nullptr;
-		ScreenSaver* screenSaver = nullptr;
 		HINSTANCE hInstance;
 		const UINT buttonWindowWidht{ 200 }, buttonWindowHeight{ 30 };
 		UINT widht{ 500 }, height{ 500 };

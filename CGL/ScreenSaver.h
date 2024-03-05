@@ -1,4 +1,4 @@
-п»ї#pragma once
+#pragma once
 
 #include <Windows.h>
 
@@ -12,7 +12,7 @@ class ScreenSaver
 {
 	public:
 	private:
-		const wstring ClassName{ L"ScreenSaverWndClass" }, AppName{ L"Р—Р°СЃС‚Р°РІРєР° СЌРєСЂР°РЅР°"};
+		const wstring ClassName{ L"ScreenSaverWndClass" }, AppName{ L"Заставка экрана"};
 		HWND mnWnd, ScreenSaverWnd, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
