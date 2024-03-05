@@ -1,4 +1,4 @@
-#include "App.h"
+п»ї#include "App.h"
 #include "Table.h"
 #include "Expression.h"
 #include "Graphics.h"
@@ -22,7 +22,7 @@ App::App(HINSTANCE hInstance)
 	{
 		string exptData = e.what();
 
-		MessageBox(nullptr, wstring(begin(exptData), end(exptData)).c_str(), L"Ошибка", MB_ICONERROR | MB_OK);
+		MessageBox(nullptr, wstring(begin(exptData), end(exptData)).c_str(), L"РћС€РёР±РєР°", MB_ICONERROR | MB_OK);
 		ExitProcess(EXIT_FAILURE);
 	}
 }
@@ -88,31 +88,31 @@ void App::createNativeWindowControls()
 {
 	const auto buttonXY = buttonDefaultClientXY(widht, height);
 
-	this->TableButton = CreateWindowW(L"button", L"1. Таблица данных", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->TableButton = CreateWindowW(L"button", L"1. РўР°Р±Р»РёС†Р° РґР°РЅРЅС‹С…", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::TableClicked), nullptr, nullptr);
 
-	this->GraphicsButton = CreateWindowW(L"button", L"2. График данных", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->GraphicsButton = CreateWindowW(L"button", L"2. Р“СЂР°С„РёРє РґР°РЅРЅС‹С…", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 1 + 5, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::GraphicsClicked), nullptr, nullptr);
 
-	this->ExpressionButton = CreateWindow(L"button", L"3. Уравнение", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->ExpressionButton = CreateWindow(L"button", L"3. РЈСЂР°РІРЅРµРЅРёРµ", WS_VISIBLE | WS_CHILD | ES_CENTER, 
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 2 + 10, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ExpressionClicked), nullptr, nullptr);
 
-	this->IntegralButton = CreateWindow(L"button", L"4. Интеграл", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->IntegralButton = CreateWindow(L"button", L"4. РРЅС‚РµРіСЂР°Р»", WS_VISIBLE | WS_CHILD | ES_CENTER, 
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 3 + 15, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::IntegralClicked), nullptr, nullptr);
 
-	this->ScreenSaverButton = CreateWindow(L"button", L"5. Заставка", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->ScreenSaverButton = CreateWindow(L"button", L"5. Р—Р°СЃС‚Р°РІРєР°", WS_VISIBLE | WS_CHILD | ES_CENTER, 
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 4 + 20, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ScreenSaverClicked), nullptr, nullptr);
 
-	this->AboutButton = CreateWindow(L"button", L"6. Об авторе", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->AboutButton = CreateWindow(L"button", L"6. РћР± Р°РІС‚РѕСЂРµ", WS_VISIBLE | WS_CHILD | ES_CENTER, 
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 5 + 25, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::AboutClicked), nullptr, nullptr);
 
-	this->ExitButton = CreateWindow(L"button", L"Выход", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->ExitButton = CreateWindow(L"button", L"Р’С‹С…РѕРґ", WS_VISIBLE | WS_CHILD | ES_CENTER, 
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 6 + 30, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ExitClicked), nullptr, nullptr);
 
@@ -167,10 +167,10 @@ LRESULT CALLBACK App::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 			return TRUE;
 		}
-		// Трюк ниже позволяет перетаскивать окно за любую его часть.
-		case WM_LBUTTONDOWN: // Ловим нажатие ЛКМ.
+		// РўСЂСЋРє РЅРёР¶Рµ РїРѕР·РІРѕР»СЏРµС‚ РїРµСЂРµС‚Р°СЃРєРёРІР°С‚СЊ РѕРєРЅРѕ Р·Р° Р»СЋР±СѓСЋ РµРіРѕ С‡Р°СЃС‚СЊ.
+		case WM_LBUTTONDOWN: // Р›РѕРІРёРј РЅР°Р¶Р°С‚РёРµ Р›РљРњ.
 		{
-			// Отправляемое сообщение буквально значит "нажата ЛКМ на заголовке окна".
+			// РћС‚РїСЂР°РІР»СЏРµРјРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ Р±СѓРєРІР°Р»СЊРЅРѕ Р·РЅР°С‡РёС‚ "РЅР°Р¶Р°С‚Р° Р›РљРњ РЅР° Р·Р°РіРѕР»РѕРІРєРµ РѕРєРЅР°".
 			::SendMessageW(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);
 			break;
 		}
@@ -185,7 +185,7 @@ LRESULT CALLBACK App::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		}
 		case WM_CLOSE:
 		{
-			if (MessageBox(hwnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
+			if (MessageBox(hwnd, L"Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ РІС‹Р№С‚Рё?", L"Close application", MB_OKCANCEL) == IDOK)
 				DestroyWindow(hwnd);
 
 			return EXIT_SUCCESS;
@@ -208,46 +208,57 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 	{
 		case App::ButtonsInteraction::TableClicked:
 		{
-			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
-			Table* table = new Table(hwnd, hInstance);
-			HWND WND = table->GetHWND();
+			if (this->table == nullptr)
+			{
+				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				this->table = new Table(hwnd, hInstance);
+			}
+			this->table->ShowHWND();
 
-			ShowWindow(WND, SW_SHOWDEFAULT);
-			UpdateWindow(WND);
 			return TRUE;
 		}
 		case App::ButtonsInteraction::GraphicsClicked:
 		{
-			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
-			Graphics* graphics = new Graphics(hwnd, hInstance);
-			HWND WND = graphics->GetHWND();
+			if (this->graphics == nullptr)
+			{
+				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				this->graphics = new Graphics(hwnd, hInstance);
+			}
+			this->graphics->ShowHWND(SW_SHOWDEFAULT);
 
-			ShowWindow(WND, SW_SHOWDEFAULT);
-			UpdateWindow(WND);
 			return TRUE;
 		}
 		case App::ButtonsInteraction::ExpressionClicked:
 		{
-			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
-			Expression* expression = new Expression(hwnd, hInstance);
-			expression->ShowHWND(SW_SHOWDEFAULT);
+			if (this->expression == nullptr)
+			{
+				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				this->expression = new Expression(hwnd, hInstance);
+			}
+			this->expression->ShowHWND(SW_SHOWDEFAULT);
+
 			return TRUE;
 		}
 		case App::ButtonsInteraction::IntegralClicked:
 		{
-			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
-			Integral* integral = new Integral(hwnd, hInstance);
-			integral->ShowHWND(SW_SHOWDEFAULT);
+			if (this->integral == nullptr)
+			{
+				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				this->integral = new Integral(hwnd, hInstance);
+			}
+			this->integral->ShowHWND(SW_SHOWDEFAULT);
+
 			return TRUE;
 		}
 		case App::ButtonsInteraction::ScreenSaverClicked:
 		{
-			HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
-			Graphics* screenSaver = new Graphics(hwnd, hInstance);
-			HWND WND = screenSaver->GetHWND();
+			if (this->screenSaver == nullptr)
+			{
+				HINSTANCE hInstance = (HINSTANCE)::GetWindowLong(hwnd, GWLP_HINSTANCE);
+				this->screenSaver = new ScreenSaver(hwnd, hInstance);
+			}
+			this->screenSaver->ShowHWND(SW_SHOWDEFAULT);
 
-			ShowWindow(WND, SW_SHOWDEFAULT);
-			UpdateWindow(WND);
 			return TRUE;
 		}
 		case App::ButtonsInteraction::AboutClicked:
@@ -257,7 +268,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::ExitClicked:
 		{
-			if (MessageBox(hwnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
+			if (MessageBox(hwnd, L"Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ РІС‹Р№С‚Рё?", L"Close application", MB_OKCANCEL) == IDOK)
 				DestroyWindow(hwnd);
 
 			return EXIT_SUCCESS;
