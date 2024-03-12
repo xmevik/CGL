@@ -65,7 +65,7 @@ void App::initNativeWindowObj()
 	mainClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 	mainClass.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
 	mainClass.hInstance = this->hInstance;
-	mainClass.lpfnWndProc = App::applicationProc;
+	mainClass.lpfnWndProc = this->applicationProc;
 	mainClass.lpszClassName = this->ClassName.c_str();
 	mainClass.lpszMenuName = nullptr;
 	mainClass.style = 0;
