@@ -10,20 +10,27 @@ using namespace std;
 
 class Graphics
 {
-	public:
+	enum PageInteraction
+	{
+		GoBackClicked,
+	};
 
 	private:
 		const wstring ClassName{ L"GraphicsWndClass" }, AppName{ L"Графики функций"};
 		HWND mnWnd, GraphicsWnd, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
-		// TODO: Not implemented
+
 	public:
-		explicit Graphics(HWND mnHwnd, HINSTANCE hInstance);
+		explicit Graphics(HWND& mnWnd, HINSTANCE& hInstance);
 
 		void ShowHWND(int nCmdShow) const;
 
 	private:
-		LRESULT CALLBACK GraphicsProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK GraphicsProc(HWND, UINT, WPARAM, LPARAM);
+		LRESULT CALLBACK windowProc(HWND, UINT, WPARAM, LPARAM);
+		LRESULT CALLBACK handleCommand(HWND, UINT, WPARAM, LPARAM);
+		void initNativeObj();
+		void createNativeControls();
 };
 

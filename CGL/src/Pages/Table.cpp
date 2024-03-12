@@ -1,6 +1,6 @@
 #include "headers/Table.h"
 
-Table::Table(HWND mnHwnd, HINSTANCE hInstance)
+Table::Table(HWND& mnHwnd, HINSTANCE& hInstance)
 {
 	this->mnWnd = mnHwnd;
 	this->hInstance = hInstance;

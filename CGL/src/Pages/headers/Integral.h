@@ -10,7 +10,12 @@ using namespace std;
 
 class Integral
 {
-	public:
+	enum PageInteraction
+	{
+		GoBackClicked,
+
+	};
+
 	private:
 		const wstring ClassName{ L"IntegralWndClass" }, AppName{ L"Вычисление интеграла"};
 		HWND mnWnd, IntegralWnd, GoBackButton;
@@ -23,6 +28,10 @@ class Integral
 		void ShowHWND(int nCmdShow) const;
 
 	private:
-		LRESULT CALLBACK IntegralProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK IntegralProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		LRESULT CALLBACK handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		void initNativeObj();
+		void createNativeControls();
 };
 

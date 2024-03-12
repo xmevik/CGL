@@ -10,11 +10,13 @@ using namespace std;
 
 class Expression
 {
-	public:
-
+	enum PageInteraction
+	{
+		GoBackClicked,
+	};
 	private:
 		const wstring ClassName{ L"ExpressionWndClass" }, AppName{ L"Выражение" };
-		HWND mnWnd, ExpressionWnd,  GoBackButton;
+		HWND mnWnd, ExpressionWnd, GoBackButton;
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
 		// TODO: Not implemented
@@ -24,6 +26,10 @@ class Expression
 		void ShowHWND(int nCmdShow) const;
 
 	private:
-		LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK ExpressionProc(HWND, UINT, WPARAM, LPARAM);
+		LRESULT CALLBACK windowProc(HWND, UINT, WPARAM, LPARAM);
+		LRESULT CALLBACK handleCommand(HWND, UINT, WPARAM, LPARAM);
+		void initNativeObj();
+		void createNativeControls();
 };
 
