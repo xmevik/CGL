@@ -1,4 +1,4 @@
-#include "Graphics.h"
+#include "headers/Graphics.h"
 
 Graphics::Graphics(HWND mnHwnd, HINSTANCE hInstance)
 {

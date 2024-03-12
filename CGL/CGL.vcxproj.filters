@@ -15,46 +15,46 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="App.cpp">
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Pages\App.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Table.cpp">
+    <ClCompile Include="src\Pages\Table.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
+    <ClCompile Include="src\Pages\Graphics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Expression.cpp">
+    <ClCompile Include="src\Pages\Expression.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Integral.cpp">
+    <ClCompile Include="src\Pages\Integral.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenSaver.cpp">
+    <ClCompile Include="src\Pages\ScreenSaver.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h">
+    <ClInclude Include="src\Pages\headers\App.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="src\Pages\resource.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Table.h">
+    <ClInclude Include="src\Pages\headers\Table.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics.h">
+    <ClInclude Include="src\Pages\headers\Graphics.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Expression.h">
+    <ClInclude Include="src\Pages\headers\Expression.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Integral.h">
+    <ClInclude Include="src\Pages\headers\Integral.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenSaver.h">
+    <ClInclude Include="src\Pages\headers\ScreenSaver.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

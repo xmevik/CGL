@@ -129,22 +129,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="Expression.cpp" />
-    <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="Integral.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ScreenSaver.cpp" />
-    <ClCompile Include="Table.cpp" />
+    <ClCompile Include="src\Pages\App.cpp" />
+    <ClCompile Include="src\Pages\Expression.cpp" />
+    <ClCompile Include="src\Pages\Graphics.cpp" />
+    <ClCompile Include="src\Pages\Integral.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Pages\ScreenSaver.cpp" />
+    <ClCompile Include="src\Pages\Table.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="Expression.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="Integral.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="ScreenSaver.h" />
-    <ClInclude Include="Table.h" />
+    <ClInclude Include="src\Pages\headers\App.h" />
+    <ClInclude Include="src\Pages\headers\Expression.h" />
+    <ClInclude Include="src\Pages\headers\Graphics.h" />
+    <ClInclude Include="src\Pages\headers\Integral.h" />
+    <ClInclude Include="src\Pages\resource.h" />
+    <ClInclude Include="src\Pages\headers\ScreenSaver.h" />
+    <ClInclude Include="src\Pages\headers\Table.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CGL.rc" />

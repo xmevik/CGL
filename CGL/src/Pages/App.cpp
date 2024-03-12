@@ -1,9 +1,9 @@
-﻿#include "App.h"
-#include "Table.h"
-#include "Expression.h"
-#include "Graphics.h"
-#include "Integral.h"
-#include "ScreenSaver.h"
+﻿#include "headers/App.h"
+#include "headers/Table.h"
+#include "headers/Expression.h"
+#include "headers/Graphics.h"
+#include "headers/Integral.h"
+#include "headers/ScreenSaver.h"
 #include "resource.h"
 
 

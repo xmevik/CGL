@@ -1,4 +1,4 @@
-#include "ScreenSaver.h"
+#include "headers/ScreenSaver.h"
 
 ScreenSaver::ScreenSaver(HWND mnHwnd, HINSTANCE hInstance)
 {

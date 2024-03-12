@@ -5,7 +5,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #include <windows.h>
 
-#include"App.h"
+#include"Pages/headers/App.h"
 
 //	Programm entry point and main loop
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)

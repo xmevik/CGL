@@ -1,4 +1,4 @@
-#include "Integral.h"
+#include "headers/Integral.h"
 
 Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance)
 {
