@@ -208,55 +208,45 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 	{
 		case App::ButtonsInteraction::TableClicked:
 		{
-			if (this->table == nullptr)
-			{
-				HINSTANCE hInstance = GetModuleHandleW(NULL);
-				this->table = new Table(hwnd, hInstance);
-			}
+			HINSTANCE hInstance = GetModuleHandleW(NULL);
+			this->table = new Table(hwnd, hInstance);
+
 			this->table->ShowHWND(SW_SHOWDEFAULT);
 
 			return TRUE;
 		}
 		case App::ButtonsInteraction::GraphicsClicked:
 		{
-			if (this->graphics == nullptr)
-			{
-				HINSTANCE hInstance = GetModuleHandleW(NULL);
-				this->graphics = new Graphics(hwnd, hInstance);
-			}
+			HINSTANCE hInstance = GetModuleHandleW(NULL);
+			this->graphics = new Graphics(hwnd, hInstance);
+
 			this->graphics->ShowHWND(SW_SHOWDEFAULT);
 
 			return TRUE;
 		}
 		case App::ButtonsInteraction::ExpressionClicked:
 		{
-			if (this->expression == nullptr)
-			{
-				HINSTANCE hInstance = GetModuleHandleW(NULL);
-				this->expression = new Expression(hwnd, hInstance);
-			}
+			HINSTANCE hInstance = GetModuleHandleW(NULL);
+			this->expression = new Expression(hwnd, hInstance);
+
 			this->expression->ShowHWND(SW_SHOWDEFAULT);
 
 			return TRUE;
 		}
 		case App::ButtonsInteraction::IntegralClicked:
 		{
-			if (this->integral == nullptr)
-			{
-				HINSTANCE hInstance = GetModuleHandleW(NULL);
-				this->integral = new Integral(hwnd, hInstance);
-			}
+			HINSTANCE hInstance = GetModuleHandleW(NULL);
+			this->integral = new Integral(hwnd, hInstance);
+
 			this->integral->ShowHWND(SW_SHOWDEFAULT);
 
 			return TRUE;
 		}
 		case App::ButtonsInteraction::ScreenSaverClicked:
 		{
-			if (this->screenSaver == nullptr)
-			{
-				HINSTANCE hInstance = GetModuleHandleW(NULL);
-				this->screenSaver = new ScreenSaver(hwnd, hInstance);
-			}
+			HINSTANCE hInstance = GetModuleHandleW(NULL);
+			this->screenSaver = new ScreenSaver(hwnd, hInstance);
+
 			this->screenSaver->ShowHWND(SW_SHOWDEFAULT);
 
 			return TRUE;
@@ -272,6 +262,11 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 				DestroyWindow(hwnd);
 
 			return EXIT_SUCCESS;
+		}
+		case App::ButtonsInteraction::DestroyClicked:
+		{
+			if (MessageBoxW(hwnd, L"Это действие закроет окно", L"Close application", MB_OKCANCEL) == IDOK)
+				DestroyWindow(reinterpret_cast<HWND>(lParam));
 		}
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);

@@ -29,7 +29,8 @@ class App
 			IntegralClicked = 7401,
 			ScreenSaverClicked = 2398,
 			AboutClicked = 4702,
-			ExitClicked = 4584
+			ExitClicked = 4584,
+			DestroyClicked = 1555
 		};
 
 	private:

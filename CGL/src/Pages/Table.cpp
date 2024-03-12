@@ -25,13 +25,12 @@ void Table::initNativeObj()
 	tableClass.lpszMenuName = nullptr;
 	tableClass.style = 0;
 
-	if (!RegisterClassExW(&tableClass))
-		throw runtime_error("Unable to register main window class"s);
+	RegisterClassExW(&tableClass);
 
 	this->TableWnd = CreateWindowExW(0L, tableClass.lpszClassName, this->AppName.c_str(),
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
+		(GetSystemMetrics(SM_CXSCREEN) - this->widht) / 2u,
+		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
 		this->widht, this->height,
 		this->mnWnd, nullptr, this->hInstance, this);
 
@@ -78,13 +77,10 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			return this->handleCommand(hwnd, uMsg, wParam, lParam);
 		}
 		case WM_CLOSE:
-		{
-			if (MessageBoxW(this->TableWnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
-				ShowWindow(this->TableWnd, SW_HIDE);
+		{						// App::ButtonsInteraction::DestroyClicked
+			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->TableWnd));
 
-			ShowWindow(this->mnWnd, SW_SHOW);
-			UpdateWindow(this->mnWnd);
-			return EXIT_SUCCESS;
+			return TRUE;
 		}
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -97,18 +93,16 @@ LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 	switch (static_cast<Table::PageInteraction>(LOWORD(wParam)))
 	{
 		case Table::PageInteraction::GoBackClicked:
-		{
-			if (MessageBoxW(hwnd, L"Это действие закроет окно", L"Close window", MB_OKCANCEL) == IDOK)
-				DestroyWindow(hwnd);
+		{						// App::ButtonsInteraction::DestroyClicked
+			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->TableWnd));
 
-			return EXIT_SUCCESS;
+			return TRUE;
 		}
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 }
 
-// TODO: Not implemented
 void Table::ShowHWND(int nCmdShow) const
 {
 	ShowWindow(this->TableWnd, nCmdShow);
