@@ -1,3 +1,6 @@
+#include <Windows.h>
+#include <commctrl.h>
+
 #include "headers/Table.h"
 
 Table::Table(HWND& mnHwnd, HINSTANCE& hInstance)
@@ -43,6 +46,17 @@ void Table::createNativeControls()
 	this->GoBackButton = CreateWindowExW(0l, L"button", L"Вернуться назад", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		10, 10, 150, 25, this->TableWnd,
 		reinterpret_cast<HMENU>(Table::PageInteraction::GoBackClicked), nullptr, nullptr);
+
+	static double a = -3.14159265358979323846, b = 3.14159265358979323846, n = 20;
+	vector<vector<double>> tableData = TbHelper::getVectorDatas(a, b, n);
+	wstring header[5]{ L"X", L"F1", L"F2", L"Sum", L"Mean" };
+	int const textMaxLen = 10;
+
+	this->CreateListView();
+	this->SetListViewColumns(5, textMaxLen, header);
+
+	for(vector<double> data : tableData)
+		this->AddListViewItems(5, textMaxLen, data);
 }
 
 LRESULT CALLBACK Table::TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -101,6 +115,63 @@ LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
+}
+
+BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<double> item)
+{
+	int iLastIndex = ListView_GetItemCount(this->hListView);
+
+	std::wstring temp = std::to_wstring(item[0]);
+
+	LVITEM lvi{};
+	lvi.mask = LVIF_TEXT;
+	lvi.cchTextMax = textMaxLen;
+	lvi.iItem = iLastIndex;
+	lvi.pszText = (wchar_t*)temp.c_str();
+	lvi.iSubItem = 0;
+
+	if (ListView_InsertItem(this->hListView, &lvi) == -1)
+		return FALSE;
+	for (int i = 1; i < colNum; i++)
+	{
+		temp = std::to_wstring(item[i]);
+		ListView_SetItemText(this->hListView, iLastIndex, i, (wchar_t*)temp.c_str());
+	}
+
+	return TRUE;
+}
+
+int Table::SetListViewColumns(int colNum, int textMaxLen, wstring header[5])
+{
+	RECT rcl;
+	GetClientRect(this->hListView, &rcl);
+
+	int index = -1;
+
+	LVCOLUMN lvc{};
+	lvc.mask = LVCF_TEXT | LVCF_WIDTH;
+	lvc.cx = (rcl.right - rcl.left) / colNum;
+	lvc.cchTextMax = textMaxLen;
+
+	for (int i = 0; i < colNum; i++)
+	{
+		lvc.pszText = (wchar_t*)header[i].c_str();
+		index = ListView_InsertColumn(this->hListView, i, &lvc);
+		if (index == -1) break;
+	}
+
+	return index;
+}
+
+void Table::CreateListView()
+{
+	RECT rcl;
+	GetClientRect(this->TableWnd, &rcl);
+
+	this->hListView = CreateWindowExW(0L, WC_LISTVIEW, L"",
+		WS_CHILD | LVS_REPORT | WS_VISIBLE,
+		0, 40, rcl.right - rcl.left, rcl.bottom - rcl.top - 50,
+		this->TableWnd, nullptr, nullptr, nullptr);
 }
 
 void Table::ShowHWND(int nCmdShow) const

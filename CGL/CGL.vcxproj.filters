@@ -34,6 +34,9 @@
     <ClCompile Include="src\Pages\ScreenSaver.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\TablesHelper.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pages\headers\App.h">

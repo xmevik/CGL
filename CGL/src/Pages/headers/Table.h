@@ -5,6 +5,9 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <vector>
+
+#include "./../../utils/TablesHelper.cpp"
 
 using namespace std;
 
@@ -32,5 +35,8 @@ class Table
 		LRESULT CALLBACK handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		void initNativeObj();
 		void createNativeControls();
+		BOOL WINAPI AddListViewItems(int colNum, int textMaxLen, std::vector<double> item);
+		int SetListViewColumns(int colNum, int textMaxLen, wstring header[5]);
+		void CreateListView();
 };
 
