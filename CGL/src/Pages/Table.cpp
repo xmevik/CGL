@@ -90,6 +90,14 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		{
 			return this->handleCommand(hwnd, uMsg, wParam, lParam);
 		}
+		case WM_SIZE:
+		{
+			RECT rcl{};
+
+			GetWindowRect(hwnd, &rcl);
+			SetWindowPos(this->hListView, HWND_TOP, 0, 0, rcl.right - rcl.left, rcl.bottom - rcl.top - 50, SWP_NOZORDER | SWP_NOMOVE);
+			return UpdateWindow(hwnd);
+		}
 		case WM_CLOSE:
 		{						// App::ButtonsInteraction::DestroyClicked
 			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->TableWnd));
