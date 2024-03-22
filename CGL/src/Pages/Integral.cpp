@@ -105,11 +105,11 @@ LRESULT CALLBACK Integral::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			::TextOutW(hdc, 10, 50, L"Граница A = ", ::lstrlenW(L"Граница A = "));
 			::TextOutW(hdc, 10, 75, L"Граница B = ", ::lstrlenW(L"Граница B = "));
 			::TextOutW(hdc, 10, 100, L"Интегрирование методом трапеций =", ::lstrlenW(L"Интегрирование методом трапеций ="));
-			::TextOutW(hdc, 270, 100, trapezoidalStr.c_str(), lstrlenW(trapezoidalStr.c_str()));
+			::TextOutW(hdc, 270, 100, trapezoidalStr.c_str(), ::lstrlenW(trapezoidalStr.c_str()));
 			::TextOutW(hdc, 10, 125, L"Интегрирование методом Симпсона =", ::lstrlenW(L"Интегрирование методом Симпсона ="));
-			::TextOutW(hdc, 270, 125, simpsonStr.c_str(), lstrlenW(simpsonStr.c_str()));
+			::TextOutW(hdc, 270, 125, simpsonStr.c_str(), ::lstrlenW(simpsonStr.c_str()));
 			::TextOutW(hdc, 10, 150, L"Интегрирование методом средних прямоугольников =", ::lstrlenW(L"Интегрирование методом средних прямоугольников ="));
-			::TextOutW(hdc, 380, 150, midpointStr.c_str(), lstrlenW(midpointStr.c_str()));
+			::TextOutW(hdc, 380, 150, midpointStr.c_str(), ::lstrlenW(midpointStr.c_str()));
 
 			EndPaint(this->IntegralWnd, &ps);
 			return TRUE;
