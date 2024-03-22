@@ -1,5 +1,7 @@
 #include <cmath>
 #include <functional>
+#include <sstream>
+#include <iomanip>
 
 namespace IgHelper
 {
@@ -57,5 +59,12 @@ namespace IgHelper
 
         integral *= h;
         return integral;
+    }
+
+    static std::wstring doubleToWString(double value, int precision = 2) 
+    {
+        std::wstringstream stream;
+        stream << std::fixed << std::setprecision(precision) << value;
+        return stream.str();
     }
 }

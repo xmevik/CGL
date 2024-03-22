@@ -98,9 +98,9 @@ LRESULT CALLBACK Integral::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			::PAINTSTRUCT ps{};
 			::HDC hdc{ BeginPaint(this->IntegralWnd, &ps) };
 
-			std::wstring trapezoidalStr = std::to_wstring(this->trapezoidal);
-			std::wstring simpsonStr = std::to_wstring(this->simpson);
-			std::wstring midpointStr = std::to_wstring(this->midpoint);
+			std::wstring trapezoidalStr = IgHelper::doubleToWString(this->trapezoidal, 18);
+			std::wstring simpsonStr = IgHelper::doubleToWString(this->simpson, 18);
+			std::wstring midpointStr = IgHelper::doubleToWString(this->midpoint, 18);
 
 			::TextOutW(hdc, 10, 50, L"Граница A = ", ::lstrlenW(L"Граница A = "));
 			::TextOutW(hdc, 10, 75, L"Граница B = ", ::lstrlenW(L"Граница B = "));
