@@ -43,7 +43,7 @@ void Table::initNativeObj()
 
 void Table::createNativeControls()
 {
-	this->GoBackButton = CreateWindowExW(0l, L"button", L"Вернуться назад", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->GoBackButton = CreateWindowExW(0l, WC_BUTTONW, L"Вернуться назад", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		10, 10, 150, 25, this->TableWnd,
 		reinterpret_cast<HMENU>(Table::PageInteraction::GoBackClicked), nullptr, nullptr);
 
@@ -85,7 +85,8 @@ LRESULT CALLBACK Table::TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
 LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch (uMsg) {
+	switch (uMsg) 
+	{
 		case WM_COMMAND:
 		{
 			return this->handleCommand(hwnd, uMsg, wParam, lParam);
@@ -97,6 +98,18 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			GetWindowRect(hwnd, &rcl);
 			SetWindowPos(this->hListView, HWND_TOP, 0, 0, rcl.right - rcl.left, rcl.bottom - rcl.top - 50, SWP_NOZORDER | SWP_NOMOVE);
 			return UpdateWindow(hwnd);
+		}
+		case WM_NOTIFY: 
+		{
+
+			LPNMLISTVIEW pnm = (LPNMLISTVIEW)lParam;
+
+			if (pnm->hdr.hwndFrom == this->hListView && pnm->hdr.code == NM_CUSTOMDRAW) {
+
+				return ProcessCustomDraw(pnm->hdr.hwndFrom, uMsg, wParam, lParam);
+
+			}
+			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 		}
 		case WM_CLOSE:
 		{						// App::ButtonsInteraction::DestroyClicked
@@ -110,7 +123,7 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 	}
 }
 
-LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) const
 {
 	switch (static_cast<Table::PageInteraction>(LOWORD(wParam)))
 	{
@@ -125,7 +138,38 @@ LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 	}
 }
 
-BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<double> item)
+LRESULT Table::ProcessCustomDraw(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	LPNMLVCUSTOMDRAW lplvcd = (LPNMLVCUSTOMDRAW)lParam;
+
+	switch (lplvcd->nmcd.dwDrawStage) 
+	{
+		case CDDS_PREPAINT: 
+		{ //Before the paint cycle begins
+			return CDRF_NOTIFYITEMDRAW;
+		}
+		case CDDS_ITEMPREPAINT: 
+		{ //Before an item is drawn
+			return CDRF_NOTIFYSUBITEMDRAW;
+		}
+		case CDDS_SUBITEM | CDDS_ITEMPREPAINT: 
+		{ //Before a subitem is drawn
+			if (lplvcd->iSubItem == 4)
+			{
+				lplvcd->clrTextBk = RGB(103, 63, 105);
+			}
+			else if (lplvcd->iSubItem == 3)
+			{
+				lplvcd->clrTextBk = RGB(87, 85, 254);
+			}
+			return CDRF_NEWFONT;
+		}
+		default:
+			return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
+}
+
+BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<double> item) const
 {
 	int iLastIndex = ListView_GetItemCount(this->hListView);
 
@@ -149,7 +193,7 @@ BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<doub
 	return TRUE;
 }
 
-int Table::SetListViewColumns(int colNum, int textMaxLen, wstring header[5])
+int Table::SetListViewColumns(int colNum, int textMaxLen, wstring header[5]) const
 {
 	RECT rcl;
 	GetClientRect(this->hListView, &rcl);

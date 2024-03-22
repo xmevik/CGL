@@ -32,9 +32,4 @@ namespace TbHelper
 
         return result;
     }
-
-    static std::vector<std::vector<double>> addAvgData(std::vector<std::vector<double>> data)
-    {
-
-    }
 }

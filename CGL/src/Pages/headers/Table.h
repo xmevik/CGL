@@ -32,11 +32,12 @@ class Table
 	private:
 		static LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-		LRESULT CALLBACK handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		LRESULT CALLBACK handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) const;
+		LRESULT ProcessCustomDraw(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		void initNativeObj();
 		void createNativeControls();
-		BOOL WINAPI AddListViewItems(int colNum, int textMaxLen, std::vector<double> item);
-		int SetListViewColumns(int colNum, int textMaxLen, wstring header[5]);
+		BOOL WINAPI AddListViewItems(int colNum, int textMaxLen, std::vector<double> item) const;
+		int SetListViewColumns(int colNum, int textMaxLen, wstring header[5]) const;
 		void CreateListView();
 };
 
