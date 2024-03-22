@@ -12,14 +12,15 @@ class Integral
 {
 	enum PageInteraction
 	{
-		GoBackClicked,
-
+		GoBackClicked = 16548,
+		RecalculateClicked = 15548,
 	};
 
 	private:
 		const wstring ClassName{ L"IntegralWndClass" }, AppName{ L"Вычисление интеграла"};
-		HWND mnWnd, IntegralWnd, GoBackButton;
+		HWND mnWnd, IntegralWnd, GoBackButton, RecalculateButton, AEdit, BEdit;
 		UINT widht{ 500 }, height{ 500 };
+		double midpoint{ 5 }, simpson{ 5 }, trapezoidal{ 5 };
 		HINSTANCE hInstance;
 
 	public:

@@ -136,6 +136,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Pages\ScreenSaver.cpp" />
     <ClCompile Include="src\Pages\Table.cpp" />
+    <ClCompile Include="src\utils\IntegralHelper.cpp" />
     <ClCompile Include="src\utils\TablesHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
