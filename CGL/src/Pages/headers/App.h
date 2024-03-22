@@ -49,7 +49,7 @@ class App
 		explicit App(HINSTANCE hInstance);
 		~App();
 
-		int Run();
+		int Run() const;
 
 	private:
 		void initNativeWindowObj();

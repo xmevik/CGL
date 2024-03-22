@@ -1,4 +1,7 @@
-﻿#include "headers/App.h"
+﻿#include <Windows.h>
+#include <commctrl.h>
+
+#include "headers/App.h"
 #include "headers/Table.h"
 #include "headers/Expression.h"
 #include "headers/Graphics.h"
@@ -31,7 +34,7 @@ App::~App()
 {
 }
 
-int App::Run()
+int App::Run() const
 {
 	HACCEL hAccelTable = LoadAcceleratorsW(this->hInstance, L"nullptr");
 
@@ -88,31 +91,31 @@ void App::createNativeWindowControls()
 {
 	const auto buttonXY = buttonDefaultClientXY(widht, height);
 
-	this->TableButton = CreateWindowW(L"button", L"1. Таблица данных", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->TableButton = CreateWindowW(WC_BUTTONW, L"1. Таблица данных", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::TableClicked), nullptr, nullptr);
 
-	this->GraphicsButton = CreateWindowW(L"button", L"2. График данных", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->GraphicsButton = CreateWindowW(WC_BUTTONW, L"2. График данных", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 1 + 5, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::GraphicsClicked), nullptr, nullptr);
 
-	this->ExpressionButton = CreateWindowW(L"button", L"3. Уравнение", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->ExpressionButton = CreateWindowW(WC_BUTTON, L"3. Уравнение", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 2 + 10, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ExpressionClicked), nullptr, nullptr);
 
-	this->IntegralButton = CreateWindowW(L"button", L"4. Интеграл", WS_VISIBLE | WS_CHILD | ES_CENTER, 
+	this->IntegralButton = CreateWindowW(WC_BUTTON, L"4. Интеграл", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 3 + 15, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::IntegralClicked), nullptr, nullptr);
 
-	this->ScreenSaverButton = CreateWindowW(L"button", L"5. Заставка", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->ScreenSaverButton = CreateWindowW(WC_BUTTON, L"5. Заставка", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 4 + 20, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ScreenSaverClicked), nullptr, nullptr);
 
-	this->AboutButton = CreateWindowW(L"button", L"6. Об авторе", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->AboutButton = CreateWindowW(WC_BUTTON, L"6. Об авторе", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 5 + 25, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::AboutClicked), nullptr, nullptr);
 
-	this->ExitButton = CreateWindowW(L"button", L"Выход", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->ExitButton = CreateWindowW(WC_BUTTON, L"Выход", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		buttonXY.first, buttonXY.second + buttonWindowHeight * 6 + 30, buttonWindowWidht, buttonWindowHeight, this->Wnd,
 		reinterpret_cast<HMENU>(App::ButtonsInteraction::ExitClicked), nullptr, nullptr);
 
