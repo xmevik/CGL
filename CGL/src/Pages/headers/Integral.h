@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "../../utils/IntegralHelper.cpp"
+
 using namespace std;
 
 class Integral
@@ -20,7 +22,7 @@ class Integral
 		const wstring ClassName{ L"IntegralWndClass" }, AppName{ L"Вычисление интеграла"};
 		HWND mnWnd, IntegralWnd, GoBackButton, RecalculateButton, AEdit, BEdit;
 		UINT widht{ 500 }, height{ 500 };
-		double midpoint{ 5 }, simpson{ 5 }, trapezoidal{ 5 };
+		double midpoint = IgHelper::midpointIntegral(15, 20), simpson = IgHelper::simpsonIntegral(15, 20), trapezoidal = IgHelper::trapezoidalIntegral(15, 20);
 		HINSTANCE hInstance;
 
 	public:

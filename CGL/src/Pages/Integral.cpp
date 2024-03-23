@@ -2,7 +2,6 @@
 #include <commctrl.h>
 
 #include "headers/Integral.h"
-#include "../utils/IntegralHelper.cpp"
 
 Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance)
 {
