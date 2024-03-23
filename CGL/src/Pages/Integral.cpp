@@ -97,9 +97,9 @@ LRESULT CALLBACK Integral::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			::PAINTSTRUCT ps{};
 			::HDC hdc{ BeginPaint(this->IntegralWnd, &ps) };
 
-			std::wstring trapezoidalStr = IgHelper::doubleToWString(this->trapezoidal, 18);
-			std::wstring simpsonStr = IgHelper::doubleToWString(this->simpson, 18);
-			std::wstring midpointStr = IgHelper::doubleToWString(this->midpoint, 18);
+			std::wstring trapezoidalStr = doubleToWString(this->trapezoidal, 18);
+			std::wstring simpsonStr = doubleToWString(this->simpson, 18);
+			std::wstring midpointStr = doubleToWString(this->midpoint, 18);
 
 			::TextOutW(hdc, 10, 50, L"Граница A = ", ::lstrlenW(L"Граница A = "));
 			::TextOutW(hdc, 10, 75, L"Граница B = ", ::lstrlenW(L"Граница B = "));
@@ -143,9 +143,9 @@ LRESULT CALLBACK Integral::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 			AEdit = std::atoi(inputAEdit);
 			BEdit = std::atoi(inputBEdit);
 
-			this->trapezoidal = IgHelper::trapezoidalIntegral(AEdit, BEdit);
-			this->simpson = IgHelper::simpsonIntegral(AEdit, BEdit);
-			this->midpoint = IgHelper::midpointIntegral(AEdit, BEdit);
+			this->trapezoidal = trapezoidalIntegral(AEdit, BEdit);
+			this->simpson = simpsonIntegral(AEdit, BEdit);
+			this->midpoint = midpointIntegral(AEdit, BEdit);
 			
 			InvalidateRect(this->IntegralWnd, NULL, TRUE);
 

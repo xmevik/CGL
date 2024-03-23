@@ -1,3 +1,6 @@
+#include <Windows.h>
+#include <commctrl.h>
+
 #include "headers/Expression.h"
 
 Expression::Expression(HWND &mnHwnd, HINSTANCE &hInstance)
@@ -39,9 +42,19 @@ void Expression::initNativeObj()
 }
 void Expression::createNativeControls()
 {
-	this->GoBackButton = CreateWindowExW(0l, L"button", L"Вернуться назад", WS_VISIBLE | WS_CHILD | ES_CENTER,
+	this->GoBackButton = CreateWindowExW(0l, WC_BUTTONW, L"Вернуться назад", WS_VISIBLE | WS_CHILD | ES_CENTER,
 		10, 10, 150, 25, this->ExpressionWnd,
 		reinterpret_cast<HMENU>(Expression::PageInteraction::GoBackClicked), nullptr, nullptr);
+
+	this->RecalculateButton = CreateWindowExW(0l, WC_BUTTONW, L"Пересчитать интеграл", WS_VISIBLE | WS_CHILD | ES_CENTER,
+		170, 10, 160, 25, this->ExpressionWnd,
+		reinterpret_cast<HMENU>(Expression::PageInteraction::RecalculateClicked), nullptr, nullptr);
+
+	this->AEdit = CreateWindowExW(0l, WC_EDITW, L"15", WS_CHILD | WS_VISIBLE | ES_NUMBER, 95, 50, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
+
+	this->BEdit = CreateWindowExW(0l, WC_EDITW, L"20", WS_CHILD | WS_VISIBLE | ES_NUMBER, 95, 75, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
+
+	this->EEdit = CreateWindowExW(0l, WC_EDITW, L"0.001", WS_CHILD | WS_VISIBLE | ES_NUMBER, 100, 100, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 }
 
 LRESULT CALLBACK Expression::ExpressionProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -75,11 +88,28 @@ LRESULT CALLBACK Expression::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 		{
 			return this->handleCommand(hwnd, uMsg, wParam, lParam);
 		}
-		case WM_CLOSE:
-		{						// App::ButtonsInteraction::DestroyClicked
-			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->ExpressionWnd));
+		case WM_PAINT:
+		{
+			::PAINTSTRUCT ps{};
+			::HDC hdc{ BeginPaint(this->ExpressionWnd, &ps) };
 
+			std::wstring bisectionStr = doubleToWStringW(this->bisection, 18);
+			std::wstring chordStr = doubleToWStringW(this->chord, 18);
+
+			::TextOutW(hdc, 10, 50, L"Граница A = ", ::lstrlenW(L"Граница A = "));
+			::TextOutW(hdc, 10, 75, L"Граница B = ", ::lstrlenW(L"Граница B = "));
+			::TextOutW(hdc, 10, 100, L"Точность E = ", ::lstrlenW(L"Точность E = "));
+			::TextOutW(hdc, 10, 125, L"Вычисление уравнения методом бисекции =", ::lstrlenW(L"Вычисление уравнения методом бисекции ="));
+			::TextOutW(hdc, 310, 125, bisectionStr.c_str(), ::lstrlenW(bisectionStr.c_str()));
+			::TextOutW(hdc, 10, 150, L"Вычисление уравнения методом хорд =", ::lstrlenW(L"Вычисление уравнения методом хорд ="));
+			::TextOutW(hdc, 285, 150, chordStr.c_str(), ::lstrlenW(chordStr.c_str()));
+
+			EndPaint(this->ExpressionWnd, &ps);
 			return TRUE;
+		}
+		case WM_CLOSE:
+		{								// App::ButtonsInteraction::DestroyClicked
+			return SendMessageW(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->ExpressionWnd));
 		}
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -92,8 +122,37 @@ LRESULT CALLBACK Expression::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, 
 	switch (static_cast<Expression::PageInteraction>(LOWORD(wParam)))
 	{
 		case Expression::PageInteraction::GoBackClicked:
-		{						// App::ButtonsInteraction::DestroyClicked
-			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->ExpressionWnd));
+		{								// App::ButtonsInteraction::DestroyClicked
+			return SendMessageW(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->ExpressionWnd));
+		}
+		case Expression::PageInteraction::RecalculateClicked:
+		{
+			char inputAEdit[16u]{ 0 },
+				 inputBEdit[16u]{ 0 },
+				 inputEEdit[16u]{ 0 };
+
+			::GetWindowTextA(this->AEdit, inputAEdit,
+				sizeof(inputAEdit) / sizeof(char) - 1);
+
+			::GetWindowTextA(this->BEdit, inputBEdit,
+				sizeof(inputBEdit) / sizeof(char) - 1);
+
+			::GetWindowTextA(this->EEdit, inputEEdit,
+				sizeof(inputEEdit) / sizeof(char) - 1);
+
+			int AEdit{ 0u },
+				BEdit{ 0u };
+
+			double EEdit{ 0u };
+
+			AEdit = std::atoi(inputAEdit);
+			BEdit = std::atoi(inputBEdit);
+			EEdit = std::atof(inputEEdit);
+
+			this->bisection = bisectionMethod(AEdit, BEdit, EEdit);
+			this->chord = chordMethod(AEdit, BEdit, EEdit);
+
+			InvalidateRect(this->ExpressionWnd, NULL, TRUE);
 
 			return TRUE;
 		}

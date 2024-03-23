@@ -40,6 +40,9 @@
     <ClCompile Include="src\utils\IntegralHelper.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\ExpressionHelper.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pages\headers\App.h">
