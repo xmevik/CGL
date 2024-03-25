@@ -50,11 +50,11 @@ void Expression::createNativeControls()
 		170, 10, 160, 25, this->ExpressionWnd,
 		reinterpret_cast<HMENU>(Expression::PageInteraction::RecalculateClicked), nullptr, nullptr);
 
-	this->AEdit = CreateWindowExW(0l, WC_EDITW, L"15", WS_CHILD | WS_VISIBLE | ES_NUMBER, 95, 50, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
+	this->AEdit = CreateWindowExW(0l, WC_EDITW, L"-15", WS_CHILD | WS_VISIBLE, 95, 50, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 
-	this->BEdit = CreateWindowExW(0l, WC_EDITW, L"20", WS_CHILD | WS_VISIBLE | ES_NUMBER, 95, 75, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
+	this->BEdit = CreateWindowExW(0l, WC_EDITW, L"20", WS_CHILD | WS_VISIBLE, 95, 75, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 
-	this->EEdit = CreateWindowExW(0l, WC_EDITW, L"0.001", WS_CHILD | WS_VISIBLE | ES_NUMBER, 100, 100, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
+	this->EEdit = CreateWindowExW(0l, WC_EDITW, L"0.001", WS_CHILD | WS_VISIBLE, 100, 100, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 }
 
 LRESULT CALLBACK Expression::ExpressionProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -93,8 +93,16 @@ LRESULT CALLBACK Expression::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 			::PAINTSTRUCT ps{};
 			::HDC hdc{ BeginPaint(this->ExpressionWnd, &ps) };
 
-			std::wstring bisectionStr = doubleToWStringW(this->bisection, 18);
-			std::wstring chordStr = doubleToWStringW(this->chord, 18);
+			std::wstring bisectionStr, chordStr;
+			if (this->bisection == -1.024)
+				bisectionStr = L"Невозможные корни на концах интервала";
+			else
+				bisectionStr = doubleToWStringW(this->bisection, 18);
+
+			if (this->chord == -1.024)
+				chordStr = L"Невозможные корни на концах интервала";
+			else
+				chordStr = doubleToWStringW(this->chord, 18);
 
 			::TextOutW(hdc, 10, 50, L"Граница A = ", ::lstrlenW(L"Граница A = "));
 			::TextOutW(hdc, 10, 75, L"Граница B = ", ::lstrlenW(L"Граница B = "));

@@ -20,9 +20,15 @@ static std::wstring doubleToWStringW(double value, int precision)
 // Вычисление корней уравнения методом бисекции
 static double bisectionMethod(int a, int b, double e)
 {
+    if (funcE(a) * funcE(b) >= 0) {
+        return -1.024;
+    }
+
     double c = a, bTemp = b, aTemp = a;
     while ((bTemp - aTemp) / 2 > e) {
+
         c = (aTemp + bTemp) / 2;
+
         if (funcE(c) == 0.0)
             break;
         else if (funcE(c) * funcE(aTemp) < 0)
@@ -36,6 +42,10 @@ static double bisectionMethod(int a, int b, double e)
 // Вычисление корней уравнения методом хорд
 static double chordMethod(int a, int b, double e)
 {
+    if (funcE(a) * funcE(b) >= 0) {
+        return -1.024;
+    }
+
     double c = a, aTemp = a, bTemp = b;
     while (abs(bTemp - aTemp) > e) {
         // Вычисляем новую точку пересечения хорды с осью абсцисс
