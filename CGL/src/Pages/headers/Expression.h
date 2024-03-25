@@ -20,10 +20,9 @@ class Expression
 	private:
 		const wstring ClassName{ L"ExpressionWndClass" }, AppName{ L"Выражение" };
 		HWND mnWnd, ExpressionWnd, GoBackButton, RecalculateButton, AEdit, BEdit, EEdit;
-		double bisection = bisectionMethod(-15, 20, 0.001), chord = chordMethod(-15, 20, 0.001);
+		double bisection = bisectionMethod(-10, 15, 0.001), chord = chordMethod(-10, 15, 0.001);
 		UINT widht{ 500 }, height{ 500 };
 		HINSTANCE hInstance;
-		// TODO: Not implemented
 	public:
 		explicit Expression(HWND &mnWnd, HINSTANCE &hInstance);
 
