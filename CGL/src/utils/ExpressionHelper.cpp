@@ -15,9 +15,7 @@ static std::wstring doubleToWStringW(double value, int precision)
     return stream.str();
 }
 
-// TODO: steel need to test this
-
-// Вычисление корней уравнения методом бисекции
+// Вычисление корня уравнения методом бисекции
 static double bisectionMethod(int a, int b, double e)
 {
     if (funcE(a) * funcE(b) >= 0) {
@@ -39,7 +37,7 @@ static double bisectionMethod(int a, int b, double e)
     return c;
 }
 
-// Вычисление корней уравнения методом хорд
+// Вычисление корня уравнения методом хорд
 static double chordMethod(int a, int b, double e)
 {
     if (funcE(a) * funcE(b) >= 0) {
