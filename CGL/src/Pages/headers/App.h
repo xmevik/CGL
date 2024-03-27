@@ -30,7 +30,8 @@ class App
 			ScreenSaverClicked = 2398,
 			AboutClicked = 4702,
 			ExitClicked = 4584,
-			DestroyClicked = 1555
+			DestroyClicked = 1555,
+			DestroyScreenSaver = 1556,
 		};
 
 	private:

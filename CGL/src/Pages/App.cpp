@@ -250,7 +250,7 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 			HINSTANCE hInstance = GetModuleHandleW(NULL);
 			this->screenSaver = new ScreenSaver(hwnd, hInstance);
 
-			this->screenSaver->ShowHWND(SW_SHOWDEFAULT);
+			this->screenSaver->ShowHWND();
 
 			return TRUE;
 		}
@@ -270,6 +270,13 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		{
 			if (MessageBoxW(hwnd, L"Это действие закроет окно", L"Close application", MB_OKCANCEL) == IDOK)
 				DestroyWindow(reinterpret_cast<HWND>(lParam));
+			return TRUE;
+		}
+		case App::ButtonsInteraction::DestroyScreenSaver:
+		{
+			DestroyWindow(reinterpret_cast<HWND>(lParam));
+
+			return TRUE;
 		}
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);

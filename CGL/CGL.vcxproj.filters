@@ -43,6 +43,15 @@
     <ClCompile Include="src\utils\ExpressionHelper.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Components\MatrixScreenSaver\threads.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\MatrixScreenSaver\graphics\matrix.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\MatrixScreenSaver\shell\shell.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pages\headers\App.h">
@@ -66,10 +75,22 @@
     <ClInclude Include="src\Pages\headers\ScreenSaver.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\Components\MatrixScreenSaver\threads.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\MatrixScreenSaver\graphics\matrix.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\MatrixScreenSaver\shell\shell.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CGL.rc">
       <Filter>Файлы ресурсов</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="config.txt" />
   </ItemGroup>
 </Project>
