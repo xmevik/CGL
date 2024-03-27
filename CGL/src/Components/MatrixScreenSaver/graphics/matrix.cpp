@@ -77,7 +77,6 @@ namespace
 
 	void WriteRandomLettersEverywhere(HDC hdc, int Horzres, int Vertres, int WaitTime) // Colorized text
 	{
-
 		for (int i = 0; i < 5 * (Horzres + Vertres); i++)
 		{
 

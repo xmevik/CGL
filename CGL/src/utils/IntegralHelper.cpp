@@ -8,7 +8,7 @@ const int N = 1000000;
 // Функция под интегралом
 static double funcI(double x) 
 {
-    return cos(x) / (x * x + 1);
+    return x*x*log10(x);
 }
 
 // Функция численного интегрирования методом трапеций
