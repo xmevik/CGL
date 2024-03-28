@@ -7,6 +7,10 @@ Graphics::Graphics(HWND& mnHwnd, HINSTANCE& hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
+
+	if (!SetWindowLongPtr(this->GraphicsWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
+		if (GetLastError() != 0)
+			throw runtime_error("Can't register window pointer");
 }
 
 void Graphics::initNativeObj()
@@ -47,19 +51,7 @@ void Graphics::createNativeControls()
 
 LRESULT CALLBACK Graphics::GraphicsProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	Graphics* hTable;
-	if (uMsg == WM_CREATE)
-	{
-		hTable = static_cast<Graphics*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
-		SetLastError(0);
-		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(hTable)))
-			if (GetLastError() != 0)
-				return false;
-	}
-	else
-	{
-		hTable = reinterpret_cast<Graphics*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	}
+	Graphics* hTable = reinterpret_cast<Graphics*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	if (hTable)
 	{

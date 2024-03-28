@@ -33,6 +33,7 @@ class ScreenSaver
 	private:
 		static LRESULT CALLBACK SaverProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		void FireAndExit(HWND mnWnd, HWND ScreenSaverWnd, HANDLE MatrixThread, PAINTSTRUCT* ps);
 		void initNativeObj();
 		void createNativeControls();
 };

@@ -10,6 +10,10 @@ Table::Table(HWND& mnHwnd, HINSTANCE& hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
+
+	if (!SetWindowLongPtr(this->TableWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
+		if (GetLastError() != 0)
+			throw runtime_error("Can't register window pointer");
 }
 
 void Table::initNativeObj()
@@ -61,19 +65,7 @@ void Table::createNativeControls()
 
 LRESULT CALLBACK Table::TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	Table* hTable;
-	if (uMsg == WM_CREATE)
-	{
-		hTable = static_cast<Table*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
-		SetLastError(0);
-		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(hTable)))
-			if (GetLastError() != 0)
-				return false;
-	}
-	else
-	{
-		hTable = reinterpret_cast<Table*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	}
+	Table* hTable = reinterpret_cast<Table*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	if (hTable)
 	{

@@ -11,6 +11,10 @@ ScreenSaver::ScreenSaver(HWND mnHwnd, HINSTANCE hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
+
+	if (!SetWindowLongPtr(this->ScreenSaverWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
+		if (GetLastError() != 0)
+			throw runtime_error("Can't register window pointer");
 }
 
 void ScreenSaver::initNativeObj()
@@ -73,19 +77,7 @@ void ScreenSaver::createNativeControls()
 
 LRESULT CALLBACK ScreenSaver::SaverProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	ScreenSaver* hSaver;
-	if (uMsg == WM_CREATE)
-	{
-		hSaver = static_cast<ScreenSaver*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
-		SetLastError(0);
-		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(hSaver)))
-			if (GetLastError() != 0)
-				return false;
-	}
-	else
-	{
-		hSaver = reinterpret_cast<ScreenSaver*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	}
+	ScreenSaver* hSaver = reinterpret_cast<ScreenSaver*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	if (hSaver)
 	{
@@ -102,28 +94,24 @@ LRESULT CALLBACK ScreenSaver::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 	switch (uMsg)
 	{
 		case WM_KEYDOWN:
-		{
-			TerminateThread(this->MatrixThread, 0);
-			EndPaint(hwnd, &ps);
-			DestroyWindow(this->ScreenSaverWnd);// App::ButtonsInteraction::DestroyClicked
-			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1556), reinterpret_cast<LPARAM>(this->ScreenSaverWnd));
-
+			this->FireAndExit(this->mnWnd, this->ScreenSaverWnd, this->MatrixThread, &this->ps);
 			break;
-		}
+
+		case WM_KEYUP:
+			this->FireAndExit(this->mnWnd, this->ScreenSaverWnd, this->MatrixThread, &this->ps);
+			break;
+
+		case WM_DESTROY:
+			this->FireAndExit(this->mnWnd, this->ScreenSaverWnd, this->MatrixThread, &this->ps);
+			break;
+
+		case WM_CLOSE:
+			this->FireAndExit(this->mnWnd, this->ScreenSaverWnd, this->MatrixThread, &this->ps);
+			break;
 
 		case WM_PAINT:
 		{
 			matrix::InitPaint(hwnd, hdc, &ps);
-
-			break;
-		}
-
-		case WM_DESTROY:
-		{
-			TerminateThread(this->MatrixThread, 0);
-			EndPaint(hwnd, &ps);				
-			DestroyWindow(this->ScreenSaverWnd);// App::ButtonsInteraction::DestroyClicked
-			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1556), reinterpret_cast<LPARAM>(this->ScreenSaverWnd));
 
 			break;
 		}
@@ -139,7 +127,16 @@ LRESULT CALLBACK ScreenSaver::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 
 	return 0;
 }
-// TODO: Not implemented
+
+void ScreenSaver::FireAndExit(HWND mnWnd, HWND ScreenSaverWnd, HANDLE MatrixThread, PAINTSTRUCT* ps)
+{
+#pragma warning(disable: 6258)
+	TerminateThread(MatrixThread, 0);
+	EndPaint(ScreenSaverWnd, ps);
+	DestroyWindow(ScreenSaverWnd);// App::ButtonsInteraction::DestroyClicked
+	SendMessageW(mnWnd, WM_COMMAND, LOWORD(1556), reinterpret_cast<LPARAM>(ScreenSaverWnd));
+}
+
 void ScreenSaver::ShowHWND() const
 {
 	ShowWindow(this->ScreenSaverWnd, SW_SHOWMAXIMIZED);

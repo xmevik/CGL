@@ -10,6 +10,10 @@ Expression::Expression(HWND &mnHwnd, HINSTANCE &hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
+
+	if (!SetWindowLongPtr(this->ExpressionWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
+		if (GetLastError() != 0)
+			throw runtime_error("Can't register window pointer");
 }
 
 void Expression::initNativeObj()
@@ -59,19 +63,7 @@ void Expression::createNativeControls()
 
 LRESULT CALLBACK Expression::ExpressionProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	Expression* hExpression;
-	if (uMsg == WM_CREATE)
-	{
-		hExpression = static_cast<Expression*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
-		SetLastError(0);
-		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(hExpression)))
-			if (GetLastError() != 0)
-				return false;
-	}
-	else
-	{
-		hExpression = reinterpret_cast<Expression*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	}
+	Expression* hExpression = reinterpret_cast<Expression*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	if (hExpression)
 	{

@@ -10,6 +10,10 @@ Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
+
+	if (!SetWindowLongPtr(this->IntegralWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
+		if (GetLastError() != 0)
+			throw runtime_error("Can't register window pointer");
 }
 
 void Integral::initNativeObj()
@@ -58,19 +62,7 @@ void Integral::createNativeControls()
 
 LRESULT CALLBACK Integral::IntegralProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	Integral* hIntegral;
-	if (uMsg == WM_CREATE)
-	{
-		hIntegral = static_cast<Integral*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
-		SetLastError(0);
-		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(hIntegral)))
-			if (GetLastError() != 0)
-				return false;
-	}
-	else
-	{
-		hIntegral = reinterpret_cast<Integral*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	}
+	Integral* hIntegral = reinterpret_cast<Integral*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	if (hIntegral)
 	{
