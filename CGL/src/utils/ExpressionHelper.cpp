@@ -3,6 +3,8 @@
 #include <sstream>
 #include <iomanip>
 
+#define ERR_NO_SUCH_ROOTS -0.102420484096
+
 static double funcE(double x)
 {
     return 0.5 + cos(x) - 2 * x * sin(x);
@@ -19,43 +21,38 @@ static std::wstring doubleToWStringW(double value, int precision)
 static double bisectionMethod(int a, int b, double e)
 {
     if (funcE(a) * funcE(b) >= 0) {
-        return -1.024;
+        return ERR_NO_SUCH_ROOTS;
     }
 
     double c = a, bTemp = b, aTemp = a;
-    while ((bTemp - aTemp) / 2 > e) {
+    while ((bTemp - aTemp) >= e) {
 
         c = (aTemp + bTemp) / 2;
 
         if (funcE(c) == 0.0)
-            break;
+            return c;
         else if (funcE(c) * funcE(aTemp) < 0)
             bTemp = c;
         else
             aTemp = c;
     }
-    return c;
+    return (aTemp + bTemp) / 2;
 }
 
 // Вычисление корня уравнения методом хорд
 static double chordMethod(int a, int b, double e)
 {
     if (funcE(a) * funcE(b) >= 0) {
-        return -1.024;
+        return ERR_NO_SUCH_ROOTS;
     }
 
     double c = a, aTemp = a, bTemp = b;
-    while (abs(bTemp - aTemp) > e) {
+    while (abs(funcE(bTemp)) >= e) {
         // Вычисляем новую точку пересечения хорды с осью абсцисс
-        c = (aTemp * funcE(bTemp) - bTemp * funcE(aTemp)) / (funcE(bTemp) - funcE(aTemp));
+        c = aTemp - (funcE(aTemp) * (bTemp - aTemp)) / (funcE(bTemp) - funcE(aTemp));
 
-        // Проверяем, к какому отрезку принадлежит корень
-        if (funcE(c) * funcE(aTemp) < 0) {
-            bTemp = c;
-        }
-        else {
-            aTemp = c;
-        }
+        aTemp = bTemp;
+        bTemp = c;
     }
-    return c;
+    return bTemp;
 }

@@ -54,9 +54,9 @@ void Expression::createNativeControls()
 		170, 10, 160, 25, this->ExpressionWnd,
 		reinterpret_cast<HMENU>(Expression::PageInteraction::RecalculateClicked), nullptr, nullptr);
 
-	this->AEdit = CreateWindowExW(0l, WC_EDITW, L"-15", WS_CHILD | WS_VISIBLE, 95, 50, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
+	this->AEdit = CreateWindowExW(0l, WC_EDITW, L"-10", WS_CHILD | WS_VISIBLE, 95, 50, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 
-	this->BEdit = CreateWindowExW(0l, WC_EDITW, L"20", WS_CHILD | WS_VISIBLE, 95, 75, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
+	this->BEdit = CreateWindowExW(0l, WC_EDITW, L"15", WS_CHILD | WS_VISIBLE, 95, 75, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 
 	this->EEdit = CreateWindowExW(0l, WC_EDITW, L"0.001", WS_CHILD | WS_VISIBLE, 100, 100, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 }
@@ -85,13 +85,17 @@ LRESULT CALLBACK Expression::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 			::PAINTSTRUCT ps{};
 			::HDC hdc{ BeginPaint(this->ExpressionWnd, &ps) };
 
+			RECT rect;
+
+			GetClientRect(hwnd, &rect);
+
 			std::wstring bisectionStr, chordStr;
-			if (this->bisection == -1.024)
+			if (this->bisection == ERR_NO_SUCH_ROOTS)
 				bisectionStr = L"Ќевозможные корни на концах интервала";
 			else
 				bisectionStr = doubleToWStringW(this->bisection, 18);
 
-			if (this->chord == -1.024)
+			if (this->chord == ERR_NO_SUCH_ROOTS)
 				chordStr = L"Ќевозможные корни на концах интервала";
 			else
 				chordStr = doubleToWStringW(this->chord, 18);
