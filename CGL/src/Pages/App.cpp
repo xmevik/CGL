@@ -30,10 +30,6 @@ App::App(HINSTANCE hInstance)
 	}
 }
 
-App::~App()
-{
-}
-
 int App::Run() const
 {
 	HACCEL hAccelTable = LoadAcceleratorsW(this->hInstance, L"nullptr");
@@ -139,15 +135,14 @@ LRESULT CALLBACK App::applicationProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 	if (uMsg == WM_CREATE)
 	{
 		hApp = static_cast<App*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
+
 		SetLastError(0);
 		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(hApp)))
 			if (GetLastError() != 0)
-				return false;
+					return false;
 	}
 	else
-	{
 		hApp = reinterpret_cast<App*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	}
 
 	if (hApp)
 	{
@@ -268,9 +263,14 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 		case App::ButtonsInteraction::DestroyClicked:
 		{
-			if (MessageBoxW(hwnd, L"Это действие закроет окно", L"Close application", MB_OKCANCEL) == IDOK)
-				DestroyWindow(reinterpret_cast<HWND>(lParam));
-			return TRUE;
+			HWND wnd = reinterpret_cast<HWND>(lParam);
+			if(wnd != this->prevClosedWnd)
+				if (MessageBoxW(hwnd, L"Это действие закроет окно", L"Close window", MB_OKCANCEL) == IDOK)
+				{
+					this->prevClosedWnd = wnd;
+					DestroyWindow(wnd);
+				}
+			return EXIT_SUCCESS;
 		}
 		case App::ButtonsInteraction::DestroyScreenSaver:
 		{

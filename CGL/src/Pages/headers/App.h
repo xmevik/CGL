@@ -36,7 +36,7 @@ class App
 
 	private:
 		const wstring AppName{ L"CGL" }, ClassName{ L"MainWndClass" };
-		HWND Wnd{}, TableButton{}, GraphicsButton{}, ExpressionButton{}, IntegralButton{}, ScreenSaverButton{}, AboutButton{}, ExitButton{};
+		HWND Wnd, TableButton, GraphicsButton, ExpressionButton, IntegralButton, ScreenSaverButton, AboutButton, ExitButton, prevClosedWnd;
 		Table* table;
 		Graphics* graphics;
 		Expression* expression;
@@ -48,7 +48,6 @@ class App
 
 	public:
 		explicit App(HINSTANCE hInstance);
-		~App();
 
 		int Run() const;
 
