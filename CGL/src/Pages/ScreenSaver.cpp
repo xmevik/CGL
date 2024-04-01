@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iomanip>
 
-ScreenSaver::ScreenSaver(HWND mnHwnd, HINSTANCE hInstance)
+ScreenSaver::ScreenSaver(HWND &mnHwnd, HINSTANCE &hInstance)
 {
 	this->mnWnd = mnHwnd;
 	this->hInstance = hInstance;

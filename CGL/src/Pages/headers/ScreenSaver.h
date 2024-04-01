@@ -24,9 +24,8 @@ class ScreenSaver
 		bool isScreenSaverActive{ false };
 		matrix::GraphicsParam ThreadParam;
 		HINSTANCE hInstance;
-		// TODO: Not implemented
 	public:
-		explicit ScreenSaver(HWND mnWnd, HINSTANCE hInstance);
+		explicit ScreenSaver(HWND &mnWnd, HINSTANCE &hInstance);
 
 		void ShowHWND() const;
 
