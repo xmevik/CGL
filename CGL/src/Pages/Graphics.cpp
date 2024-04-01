@@ -116,22 +116,58 @@ LRESULT CALLBACK Graphics::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 }
 
 void Graphics::DrawAxes() const {
-	MoveToEx(this->hdc, 0, this->height / 2, NULL); // Ось Y
+	MoveToEx(this->hdc, 0, this->height / 2, NULL); // Y
 	LineTo(this->hdc, this->width, height / 2);
 
-	MoveToEx(this->hdc, this->width / 2, 0, NULL); // Ось X
+	MoveToEx(this->hdc, this->width / 2, 0, NULL); // X
 	LineTo(this->hdc, this->width / 2, this->height);
 
-	// Насечки на осях (упрощенно)
-	for (int i = 0; i <= this->width; i += 50) {
-		MoveToEx(this->hdc, i, this->height / 2 - 5, NULL);
-		LineTo(this->hdc, i, this->height / 2 + 5);
+	POINT center = POINT{ this->width / 2, this->height / 2 };
+
+	//	x+
+	for (int i = center.x; i < this->width - 8; i += 10)
+	{
+		MoveToEx(this->hdc, i, this->height / 2 - 3, NULL);
+		LineTo(this->hdc, i, this->height / 2 + 3);
 	}
 
-	for (int i = 0; i <= this->height; i += 50) {
-		MoveToEx(this->hdc, this->width / 2 - 5, i, NULL);
-		LineTo(this->hdc, this->width / 2 + 5, i);
+	//	x-
+	for (int i = center.x; i >=0 ; i -= 10)
+	{
+		MoveToEx(this->hdc, i, this->height / 2 - 3, NULL);
+		LineTo(this->hdc, i, this->height / 2 + 3);
 	}
+
+	// y-
+	for (int i = center.y; i <= this->height; i += 10) {
+		MoveToEx(this->hdc, this->width / 2 - 3, i, NULL);
+		LineTo(this->hdc, this->width / 2 + 3, i);
+	}
+
+	// y+
+	for (int i = center.y; i > 8; i -= 10) {
+		MoveToEx(this->hdc, this->width / 2 - 3, i, NULL);
+		LineTo(this->hdc, this->width / 2 + 3, i);
+	}
+
+	// x arrow
+	MoveToEx(this->hdc, this->width, this->height / 2, NULL);
+	LineTo(this->hdc, this->width - 8, this->height / 2 - 5);
+	MoveToEx(this->hdc, this->width, this->height / 2, NULL);
+	LineTo(this->hdc, this->width- 8, this->height / 2 + 5);
+
+	// y arrow
+	MoveToEx(this->hdc, this->width / 2, 0, NULL);
+	LineTo(this->hdc, this->width / 2 - 5, 0 + 8);
+	MoveToEx(this->hdc, this->width / 2, 0, NULL);
+	LineTo(this->hdc, this->width / 2 + 5, 0 + 8);
+
+	// Axes namings
+	SetBkColor(this->hdc, this->color::Black);
+	SetTextColor(this->hdc, this->color::White);
+	TextOutW(this->hdc, this->width - 10, this->height / 2 - 22, L"X", lstrlenW(L"X"));
+	//TextOutW(this->hdc, 10, 10, L"X", lstrlenW(L"X"));
+	TextOutW(this->hdc, this->width / 2 + 8, 0, L"Y", lstrlenW(L"Y"));
 }
 
 void Graphics::DrawGraph() {
