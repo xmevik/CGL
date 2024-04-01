@@ -52,6 +52,9 @@
     <ClCompile Include="src\Components\MatrixScreenSaver\shell\shell.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\GraphicsHelper.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pages\headers\App.h">

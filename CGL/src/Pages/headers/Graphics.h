@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include "../../utils/GraphicsHelper.cpp"
+
 using namespace std;
 
 class Graphics
@@ -22,6 +24,8 @@ class Graphics
 	private:
 		const wstring ClassName{ L"GraphicsWndClass" }, AppName{ L"Графики функций"};
 		vector<vector<double>> graphData;
+		long scale = 20;
+		POINT center;
 		HDC hdc;
 		HPEN mnPen, firtsGraphPen, secGraphPen;
 		HWND mnWnd, GraphicsWnd;
@@ -39,7 +43,7 @@ class Graphics
 		void initNativeObj();
 		void createNativeControls();
 
-		void DrawAxes() const;
+		void DrawAxes();
 		void DrawGraph();
 };
 

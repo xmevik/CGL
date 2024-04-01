@@ -83,6 +83,28 @@ LRESULT CALLBACK Graphics::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			break;
 		}
 
+		case WM_KEYDOWN:
+		{
+			switch (wParam)
+			{
+				case VK_ADD:
+				{
+					this->scale += 10;
+					InvalidateRect(hwnd, NULL, TRUE);
+					break;
+				}
+
+				case VK_SUBTRACT:
+				{
+					if(this->scale >= 11)
+						this->scale -= 10;
+					InvalidateRect(hwnd, NULL, TRUE);
+					break;
+				}
+			}
+			break;
+		}
+
 		case WM_SIZE:
 		{
 			this->width = LOWORD(lParam);
@@ -115,37 +137,38 @@ LRESULT CALLBACK Graphics::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 	return TRUE;
 }
 
-void Graphics::DrawAxes() const {
+void Graphics::DrawAxes() 
+{
 	MoveToEx(this->hdc, 0, this->height / 2, NULL); // Y
 	LineTo(this->hdc, this->width, height / 2);
 
 	MoveToEx(this->hdc, this->width / 2, 0, NULL); // X
 	LineTo(this->hdc, this->width / 2, this->height);
 
-	POINT center = POINT{ this->width / 2, this->height / 2 };
+	this->center = POINT{ this->width / 2, this->height / 2 };
 
 	//	x+
-	for (int i = center.x; i < this->width - 8; i += 10)
+	for (int i = this->center.x; i < this->width - 8; i += this->scale)
 	{
 		MoveToEx(this->hdc, i, this->height / 2 - 3, NULL);
 		LineTo(this->hdc, i, this->height / 2 + 3);
 	}
 
 	//	x-
-	for (int i = center.x; i >=0 ; i -= 10)
+	for (int i = this->center.x; i >=0 ; i -= this->scale)
 	{
 		MoveToEx(this->hdc, i, this->height / 2 - 3, NULL);
 		LineTo(this->hdc, i, this->height / 2 + 3);
 	}
 
 	// y-
-	for (int i = center.y; i <= this->height; i += 10) {
+	for (int i = this->center.y; i <= this->height; i += this->scale) {
 		MoveToEx(this->hdc, this->width / 2 - 3, i, NULL);
 		LineTo(this->hdc, this->width / 2 + 3, i);
 	}
 
 	// y+
-	for (int i = center.y; i > 8; i -= 10) {
+	for (int i = this->center.y; i > 8; i -= this->scale) {
 		MoveToEx(this->hdc, this->width / 2 - 3, i, NULL);
 		LineTo(this->hdc, this->width / 2 + 3, i);
 	}
@@ -170,19 +193,49 @@ void Graphics::DrawAxes() const {
 	TextOutW(this->hdc, this->width / 2 + 8, 0, L"Y", lstrlenW(L"Y"));
 }
 
-void Graphics::DrawGraph() {
-	if (this->graphData.empty()) return;
+#pragma warning(disable: 4244)
+void Graphics::DrawGraph() 
+{
+	if (this->graphData.size() == 0)
+	{
+		static double a = -3.14159265358979323846, b = 3.14159265358979323846, n = 20;
+		this->graphData = GhHelper::getVectorDatas(a, b, n);
+	}
 
-	// Пример отрисовки одного графика (упрощенно)
-	for (size_t i = 0; i < this->graphData[0].size() - 1; ++i) {
-		int x1 = static_cast<int>(i * (this->width / this->graphData[0].size()));
-		int y1 = this->height / 2 - static_cast<int>(this->graphData[0][i] * 20); // Умножаем на масштаб
+	bool isFirstElementFound = false;
+	SelectObject(this->hdc, this->firtsGraphPen);
+	for (auto& data : this->graphData)
+	{
+		if (!isFirstElementFound)
+		{
+			MoveToEx(this->hdc, center.x + (data[0] * this->scale), center.y + (data[1] * this->scale), NULL);
+			isFirstElementFound = true;
+			continue;
+		}
 
-		int x2 = static_cast<int>((i + 1) * (this->width / this->graphData[0].size()));
-		int y2 = this->height / 2 - static_cast<int>(this->graphData[0][i + 1] * 20); // Умножаем на масштаб
+		LineTo(this->hdc, center.x + (data[0] * this->scale), center.y + (data[1] * this->scale));
+		if (this->graphData[graphData.size()-1] == data)
+		{
+			TextOutW(this->hdc, center.x + (data[0] * this->scale), center.y + (data[1] * this->scale) + 10, L"F1(X)", lstrlenW(L"F1(X)"));
+		}
+	}
 
-		MoveToEx(this->hdc, x1, y1, NULL);
-		LineTo(this->hdc, x2, y2);
+	isFirstElementFound = false;
+	SelectObject(this->hdc, this->secGraphPen);
+	for (auto& data : this->graphData)
+	{
+		if (!isFirstElementFound)
+		{
+			MoveToEx(this->hdc, center.x + (data[0] * this->scale), center.y + (data[2] * this->scale), NULL);
+			isFirstElementFound = true;
+			continue;
+		}
+
+		LineTo(this->hdc, center.x + (data[0] * this->scale), center.y + (data[2] * this->scale));
+		if (this->graphData[graphData.size()-1] == data)
+		{
+			TextOutW(this->hdc, center.x + (data[0] * this->scale), center.y + (data[1] * this->scale) - 30, L"F2(X)", lstrlenW(L"F2(X)"));
+		}
 	}
 }
 

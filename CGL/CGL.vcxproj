@@ -139,6 +139,7 @@
     <ClCompile Include="src\Pages\ScreenSaver.cpp" />
     <ClCompile Include="src\Pages\Table.cpp" />
     <ClCompile Include="src\utils\ExpressionHelper.cpp" />
+    <ClCompile Include="src\utils\GraphicsHelper.cpp" />
     <ClCompile Include="src\utils\IntegralHelper.cpp" />
     <ClCompile Include="src\utils\TablesHelper.cpp" />
     <ClCompile Include="src\Components\MatrixScreenSaver\threads.cpp" />
