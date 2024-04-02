@@ -12,8 +12,7 @@ Table::Table(HWND& mnHwnd, HINSTANCE& hInstance)
 	this->createNativeControls();
 
 	if (!SetWindowLongPtr(this->TableWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
-		if (GetLastError() != 0)
-			throw runtime_error("Can't register window pointer");
+		return;
 }
 
 void Table::initNativeObj()
@@ -52,15 +51,19 @@ void Table::createNativeControls()
 		reinterpret_cast<HMENU>(Table::PageInteraction::GoBackClicked), nullptr, nullptr);
 
 	static double a = -3.14159265358979323846, b = 3.14159265358979323846, n = 20;
-	vector<vector<double>> tableData = TbHelper::getVectorDatas(a, b, n);
+	this->tableData = TbHelper::getVectorDatas(a, b, n);
+	this->minMaxData = TbHelper::getMinMaxData(this->tableData);
 	wstring header[5]{ L"X", L"F1", L"F2", L"Sum", L"Mean" };
 	int const textMaxLen = 10;
 
 	this->CreateListView();
 	this->SetListViewColumns(5, textMaxLen, header);
 
-	for(vector<double> data : tableData)
+	for(vector<double> data : this->tableData)
 		this->AddListViewItems(5, textMaxLen, data);
+
+	this->AddConcreteListViewItem(5, textMaxLen, minMaxData[0]);
+	this->AddConcreteListViewItem(5, textMaxLen, minMaxData[1]);
 }
 
 LRESULT CALLBACK Table::TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -93,13 +96,25 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		}
 		case WM_NOTIFY: 
 		{
+			LPNMHDR nmhdr = (LPNMHDR)lParam;
+			if (nmhdr->code == NM_CUSTOMDRAW)
+			{
+				LPNMLVCUSTOMDRAW lvcd = (LPNMLVCUSTOMDRAW)lParam;
+				if (lvcd->nmcd.dwDrawStage == CDDS_PREPAINT)
+				{
+					SetWindowLongPtr(hwnd, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
+					return CDRF_NOTIFYITEMDRAW;
+				}
+				else if (lvcd->nmcd.dwDrawStage == CDDS_ITEMPREPAINT)
+				{
+					int index = lvcd->nmcd.dwItemSpec;
+					int subItemIndex = lvcd->iSubItem;
 
-			LPNMLISTVIEW pnm = (LPNMLISTVIEW)lParam;
-
-			if (pnm->hdr.hwndFrom == this->hListView && pnm->hdr.code == NM_CUSTOMDRAW) {
-
-				return ProcessCustomDraw(pnm->hdr.hwndFrom, uMsg, wParam, lParam);
-
+					if (index == ListView_GetItemCount(this->hListView) - 2)
+						lvcd->clrTextBk = RGB(112, 66, 100);
+					if (index == ListView_GetItemCount(this->hListView) - 1)
+						lvcd->clrTextBk = RGB(187, 132, 147);
+				}
 			}
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 		}
@@ -128,37 +143,7 @@ LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
-}
-
-LRESULT Table::ProcessCustomDraw(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	LPNMLVCUSTOMDRAW lplvcd = (LPNMLVCUSTOMDRAW)lParam;
-
-	switch (lplvcd->nmcd.dwDrawStage) 
-	{
-		case CDDS_PREPAINT: 
-		{ //Before the paint cycle begins
-			return CDRF_NOTIFYITEMDRAW;
-		}
-		case CDDS_ITEMPREPAINT: 
-		{ //Before an item is drawn
-			return CDRF_NOTIFYSUBITEMDRAW;
-		}
-		case CDDS_SUBITEM | CDDS_ITEMPREPAINT: 
-		{ //Before a subitem is drawn
-			if (lplvcd->iSubItem == 4)
-			{
-				lplvcd->clrTextBk = RGB(103, 63, 105);
-			}
-			else if (lplvcd->iSubItem == 3)
-			{
-				lplvcd->clrTextBk = RGB(87, 85, 254);
-			}
-			return CDRF_NEWFONT;
-		}
-		default:
-			return DefWindowProc(hwnd, uMsg, wParam, lParam);
-	}
+	return TRUE;
 }
 
 BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<double> item) const
@@ -180,6 +165,28 @@ BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<doub
 	{
 		temp = std::to_wstring(item[i]);
 		ListView_SetItemText(this->hListView, iLastIndex, i, (wchar_t*)temp.c_str());
+	}
+
+	return TRUE;
+}
+
+BOOL WINAPI Table::AddConcreteListViewItem(int colNum, int textMaxLen, std::vector<wstring> item) const
+{
+	int iLastIndex = ListView_GetItemCount(this->hListView);
+
+
+	LVITEM lvi{};
+	lvi.mask = LVIF_TEXT;
+	lvi.cchTextMax = textMaxLen;
+	lvi.iItem = iLastIndex;
+	lvi.pszText = (wchar_t*)item[0].c_str();
+	lvi.iSubItem = 0;
+
+	if (ListView_InsertItem(this->hListView, &lvi) == -1)
+		return FALSE;
+	for (int i = 1; i < colNum; i++)
+	{
+		ListView_SetItemText(this->hListView, iLastIndex, i, (wchar_t*)item[i].c_str());
 	}
 
 	return TRUE;
@@ -213,7 +220,7 @@ void Table::CreateListView()
 	GetClientRect(this->TableWnd, &rcl);
 
 	this->hListView = CreateWindowExW(0L, WC_LISTVIEW, L"",
-		WS_CHILD | LVS_REPORT | WS_VISIBLE,
+		WS_CHILD | LVS_REPORT | WS_VISIBLE | SWP_HIDEWINDOW,
 		0, 40, rcl.right - rcl.left, rcl.bottom - rcl.top - 50,
 		this->TableWnd, nullptr, nullptr, nullptr);
 }

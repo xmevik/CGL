@@ -22,8 +22,10 @@ class Table
 	private:
 		const wstring ClassName{ L"TableWndClass" }, AppName{ L"Таблица"};
 		HWND mnWnd, TableWnd, hListView, GoBackButton;
-		UINT widht{ 500 }, height{ 500 };
+		UINT widht{ 600 }, height{ 600 };
 		HINSTANCE hInstance;
+		vector<vector<double>> tableData;
+		vector<vector<wstring>> minMaxData;
 
 	public:
 		explicit Table(HWND& mnWnd, HINSTANCE& hInstence);
@@ -33,10 +35,10 @@ class Table
 		static LRESULT CALLBACK TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		LRESULT CALLBACK windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		LRESULT CALLBACK handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) const;
-		LRESULT ProcessCustomDraw(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		void initNativeObj();
 		void createNativeControls();
 		BOOL WINAPI AddListViewItems(int colNum, int textMaxLen, std::vector<double> item) const;
+		BOOL WINAPI AddConcreteListViewItem(int colNum, int textMaxLen, std::vector<wstring> item) const;
 		int SetListViewColumns(int colNum, int textMaxLen, wstring header[5]) const;
 		void CreateListView();
 };
