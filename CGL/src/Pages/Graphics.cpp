@@ -94,9 +94,24 @@ LRESULT CALLBACK Graphics::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 					break;
 				}
 
+				case VK_OEM_PLUS:
+				{
+					this->scale += 10;
+					InvalidateRect(hwnd, NULL, TRUE);
+					break;
+				}
+
 				case VK_SUBTRACT:
 				{
 					if(this->scale >= 11)
+						this->scale -= 10;
+					InvalidateRect(hwnd, NULL, TRUE);
+					break;
+				}
+
+				case VK_OEM_MINUS:
+				{
+					if (this->scale >= 11)
 						this->scale -= 10;
 					InvalidateRect(hwnd, NULL, TRUE);
 					break;
@@ -234,7 +249,7 @@ void Graphics::DrawGraph()
 		LineTo(this->hdc, center.x + (data[0] * this->scale), center.y + (data[2] * this->scale));
 		if (this->graphData[graphData.size()-1] == data)
 		{
-			TextOutW(this->hdc, center.x + (data[0] * this->scale), center.y + (data[1] * this->scale) - 30, L"F2(X)", lstrlenW(L"F2(X)"));
+			TextOutW(this->hdc, center.x + (data[0] * this->scale), center.y + (data[2] * this->scale) - 25, L"F2(X)", lstrlenW(L"F2(X)"));
 		}
 	}
 }
