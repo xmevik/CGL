@@ -132,16 +132,8 @@
     <ClCompile Include="src\Components\MatrixScreenSaver\shell\shell.cpp" />
     <ClCompile Include="src\Components\MatrixScreenSaver\graphics\matrix.cpp" />
     <ClCompile Include="src\Pages\App.cpp" />
-    <ClCompile Include="src\Pages\Expression.cpp" />
-    <ClCompile Include="src\Pages\Graphics.cpp" />
-    <ClCompile Include="src\Pages\Integral.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Pages\ScreenSaver.cpp" />
-    <ClCompile Include="src\Pages\Table.cpp" />
-    <ClCompile Include="src\utils\ExpressionHelper.cpp" />
-    <ClCompile Include="src\utils\GraphicsHelper.cpp" />
-    <ClCompile Include="src\utils\IntegralHelper.cpp" />
-    <ClCompile Include="src\utils\TablesHelper.cpp" />
     <ClCompile Include="src\Components\MatrixScreenSaver\threads.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,12 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CGL.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

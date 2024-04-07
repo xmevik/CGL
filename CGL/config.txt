@@ -1,8 +1,0 @@
-Values writed at the start of every line and end at ':'. Values can't be fractional. | Значения написаны в начале каждой строки и заканчиваются на ':'. Значения не могут быть дробными.
-180 : Time before ScreenSaver activation in seconds (changes will not take effect until you restart the program). | Время до активации программы в секундах (изменения не вступят в силу пока вы не перезагрузите программу).
-0 : ScreenSaver type. 0 is main ScreenSaver (green text and easter eggs), 1 - inf are video names in video folder. | Тип скринсейвера. 0 - главный скринсейвер (зелёный текст и пасхалки), 1 - бесконченость это названия видео в папке videos.
-255 : Window transparency from 0 (fully transparent) to 255 (fully opaque). | Прозрачность окна от 0 (полность прозрачное) до 255 (полностью непрозрачное).
-10 : Easter eggs chance from 3 to inf (more - less often). | Шанс на появление пасхалок от 3 до бескончености (больше - реже).
-5 : Time between writing lines of green text in milliseconds. | Время между выводом строк зелёного текста в миллисекундах.
-1 : Time between writing random letters everywhere in milliseconds. | Время между выводом случайных букв везде в миллисекундах.
-150 : Time between writing random letters on error window in milliseconds. | Время между выводом случайных букв на окне ошибки в миллисекундах.
