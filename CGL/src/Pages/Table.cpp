@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include <commctrl.h>
-
 #include "headers/Table.h"
 
 Table::Table(HWND& mnHwnd, HINSTANCE& hInstance)
@@ -10,11 +9,7 @@ Table::Table(HWND& mnHwnd, HINSTANCE& hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
-
-	if (!SetWindowLongPtr(this->TableWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
-		return;
 }
-
 void Table::initNativeObj()
 {
 	WNDCLASSEXW tableClass{ sizeof(WNDCLASSEXW) };
@@ -26,7 +21,7 @@ void Table::initNativeObj()
 	tableClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 	tableClass.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
 	tableClass.hInstance = this->hInstance;
-	tableClass.lpfnWndProc = this->TableProc;
+	tableClass.lpfnWndProc = this->windowProc;
 	tableClass.lpszClassName = this->ClassName.c_str();
 	tableClass.lpszMenuName = nullptr;
 	tableClass.style = 0;
@@ -39,11 +34,7 @@ void Table::initNativeObj()
 		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
 		this->widht, this->height,
 		this->mnWnd, nullptr, this->hInstance, this);
-
-	if (this->TableWnd == INVALID_HANDLE_VALUE)
-		throw runtime_error("Unable to create main window"s);
 }
-
 void Table::createNativeControls()
 {
 	this->GoBackButton = CreateWindowExW(0l, WC_BUTTONW, L"Вернуться назад", WS_VISIBLE | WS_CHILD | ES_CENTER,
@@ -65,19 +56,6 @@ void Table::createNativeControls()
 	this->AddConcreteListViewItem(5, textMaxLen, minMaxData[0]);
 	this->AddConcreteListViewItem(5, textMaxLen, minMaxData[1]);
 }
-
-LRESULT CALLBACK Table::TableProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	Table* hTable = reinterpret_cast<Table*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
-	if (hTable)
-	{
-		hTable->TableWnd = hwnd;
-		return hTable->windowProc(hwnd, uMsg, wParam, lParam);
-	}
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
 LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) 
@@ -85,14 +63,6 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		case WM_COMMAND:
 		{
 			return this->handleCommand(hwnd, uMsg, wParam, lParam);
-		}
-		case WM_SIZE:
-		{
-			RECT rcl{};
-
-			GetWindowRect(hwnd, &rcl);
-			SetWindowPos(this->hListView, HWND_TOP, 0, 0, rcl.right - rcl.left, rcl.bottom - rcl.top - 50, SWP_NOZORDER | SWP_NOMOVE);
-			return UpdateWindow(hwnd);
 		}
 		case WM_NOTIFY: 
 		{
@@ -119,9 +89,8 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 		}
 		case WM_CLOSE:
-		{						// App::ButtonsInteraction::DestroyClicked
+		{
 			SendMessage(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->TableWnd));
-
 			return TRUE;
 		}
 		default:
@@ -129,7 +98,6 @@ LRESULT CALLBACK Table::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			break;
 	}
 }
-
 LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) const
 {
 	switch (static_cast<Table::PageInteraction>(LOWORD(wParam)))
@@ -145,7 +113,6 @@ LRESULT CALLBACK Table::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 	}
 	return TRUE;
 }
-
 BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<double> item) const
 {
 	int iLastIndex = ListView_GetItemCount(this->hListView);
@@ -169,7 +136,6 @@ BOOL WINAPI Table::AddListViewItems(int colNum, int textMaxLen, std::vector<doub
 
 	return TRUE;
 }
-
 BOOL WINAPI Table::AddConcreteListViewItem(int colNum, int textMaxLen, std::vector<wstring> item) const
 {
 	int iLastIndex = ListView_GetItemCount(this->hListView);
@@ -191,7 +157,6 @@ BOOL WINAPI Table::AddConcreteListViewItem(int colNum, int textMaxLen, std::vect
 
 	return TRUE;
 }
-
 int Table::SetListViewColumns(int colNum, int textMaxLen, wstring header[5]) const
 {
 	RECT rcl;
@@ -213,7 +178,6 @@ int Table::SetListViewColumns(int colNum, int textMaxLen, wstring header[5]) con
 
 	return index;
 }
-
 void Table::CreateListView()
 {
 	RECT rcl;
@@ -224,7 +188,6 @@ void Table::CreateListView()
 		0, 40, rcl.right - rcl.left, rcl.bottom - rcl.top - 50,
 		this->TableWnd, nullptr, nullptr, nullptr);
 }
-
 void Table::ShowHWND(int nCmdShow) const
 {
 	ShowWindow(this->TableWnd, nCmdShow);

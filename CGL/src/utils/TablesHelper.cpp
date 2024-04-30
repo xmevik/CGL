@@ -14,9 +14,6 @@ struct TbHelper
 
     static double getMeanDistance(double a, double b, double n) { return fabs(a - b) / (n); }
 
-    //  _____________________________________
-    //  |_0_|___1___|___2___|___3___|___4___|
-    //  |_x_|_F1(x)_|_F2(x)_|__sum__|__avg__|
     static std::vector<std::vector<double>> getVectorDatas(double a, double b, double n)
     {
         std::vector<std::vector<double>> result;
@@ -61,8 +58,6 @@ struct TbHelper
         temp.push_back(minName);
         temp.push_back(to_wstring(minFirst));
         temp.push_back(to_wstring(minSecond));
-        temp.push_back(L"");
-        temp.push_back(L"");
         result.push_back(temp);
 
         temp.clear();
@@ -70,8 +65,6 @@ struct TbHelper
         temp.push_back(maxName);
         temp.push_back(to_wstring(maxFirst));
         temp.push_back(to_wstring(maxSecond));
-        temp.push_back(L"");
-        temp.push_back(L"");
         result.push_back(temp);
 
         return result;

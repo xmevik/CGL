@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include <commctrl.h>
-
 #include "headers/Integral.h"
 
 Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance)
@@ -10,12 +9,7 @@ Integral::Integral(HWND& mnHwnd, HINSTANCE& hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
-
-	if (!SetWindowLongPtr(this->IntegralWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
-		if (GetLastError() != 0)
-			throw runtime_error("Can't register window pointer");
 }
-
 void Integral::initNativeObj()
 {
 	WNDCLASSEXW integralClass{ sizeof(WNDCLASSEXW) };
@@ -40,11 +34,7 @@ void Integral::initNativeObj()
 		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
 		this->widht, this->height,
 		this->mnWnd, nullptr, this->hInstance, this);
-
-	if (this->IntegralWnd == INVALID_HANDLE_VALUE)
-		throw runtime_error("Unable to create main window"s);
 }
-
 void Integral::createNativeControls()
 {
 	this->GoBackButton = CreateWindowExW(0l, WC_BUTTONW, L"Вернуться назад", WS_VISIBLE | WS_CHILD | ES_CENTER,
@@ -59,7 +49,6 @@ void Integral::createNativeControls()
 
 	this->BEdit = CreateWindowExW(0l, WC_EDITW, L"20", WS_CHILD | WS_VISIBLE | ES_NUMBER, 95, 75, 40, 20, this->IntegralWnd, nullptr, nullptr, nullptr);
 }
-
 LRESULT CALLBACK Integral::IntegralProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	Integral* hIntegral = reinterpret_cast<Integral*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
@@ -71,7 +60,6 @@ LRESULT CALLBACK Integral::IntegralProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
-
 LRESULT CALLBACK Integral::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) 
@@ -109,7 +97,6 @@ LRESULT CALLBACK Integral::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 }
-
 LRESULT CALLBACK Integral::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (static_cast<Integral::PageInteraction>(LOWORD(wParam)))
@@ -147,7 +134,6 @@ LRESULT CALLBACK Integral::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 }
-
 void Integral::ShowHWND(int nCmdShow) const
 {
 	ShowWindow(this->IntegralWnd, nCmdShow);

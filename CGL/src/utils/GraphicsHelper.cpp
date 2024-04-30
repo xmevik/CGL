@@ -8,9 +8,6 @@ namespace GhHelper
 
     static double getMeanDistance(double a, double b, double n) { return fabs(a - b) / (n); }
 
-    //  _____________________
-    //  |_0_|___1___|___2___|
-    //  |_x_|_F1(x)_|_F2(x)_|
     static std::vector<std::vector<double>> getVectorDatas(double a, double b, double n)
     {
         std::vector<std::vector<double>> result;

@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include <commctrl.h>
-
 #include "headers/Expression.h"
 
 Expression::Expression(HWND &mnHwnd, HINSTANCE &hInstance)
@@ -10,12 +9,7 @@ Expression::Expression(HWND &mnHwnd, HINSTANCE &hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
-
-	if (!SetWindowLongPtr(this->ExpressionWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
-		if (GetLastError() != 0)
-			throw runtime_error("Can't register window pointer");
 }
-
 void Expression::initNativeObj()
 {
 	WNDCLASSEXW expressionClass{ sizeof(WNDCLASSEXW) };
@@ -27,7 +21,7 @@ void Expression::initNativeObj()
 	expressionClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 	expressionClass.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
 	expressionClass.hInstance = this->hInstance;
-	expressionClass.lpfnWndProc = this->ExpressionProc;
+	expressionClass.lpfnWndProc = this->windowProc;
 	expressionClass.lpszClassName = this->ClassName.c_str();
 	expressionClass.lpszMenuName = nullptr;
 	expressionClass.style = 0;
@@ -40,9 +34,6 @@ void Expression::initNativeObj()
 		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
 		this->widht, this->height,
 		this->mnWnd, nullptr, this->hInstance, this);
-
-	if (this->ExpressionWnd == INVALID_HANDLE_VALUE)
-		throw runtime_error("Unable to create main window"s);
 }
 void Expression::createNativeControls()
 {
@@ -60,19 +51,6 @@ void Expression::createNativeControls()
 
 	this->EEdit = CreateWindowExW(0l, WC_EDITW, L"0.001", WS_CHILD | WS_VISIBLE, 100, 100, 40, 20, this->ExpressionWnd, nullptr, nullptr, nullptr);
 }
-
-LRESULT CALLBACK Expression::ExpressionProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	Expression* hExpression = reinterpret_cast<Expression*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
-	if (hExpression)
-	{
-		hExpression->ExpressionWnd = hwnd;
-		return hExpression->windowProc(hwnd, uMsg, wParam, lParam);
-	}
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
 LRESULT CALLBACK Expression::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) {
@@ -90,15 +68,9 @@ LRESULT CALLBACK Expression::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 			GetClientRect(hwnd, &rect);
 
 			std::wstring bisectionStr, chordStr;
-			if (this->bisection == ERR_NO_SUCH_ROOTS)
-				bisectionStr = L"Невозможные корни на концах интервала";
-			else
-				bisectionStr = doubleToWStringW(this->bisection, 18);
+			bisectionStr = doubleToWStringW(this->bisection, 18);
 
-			if (this->chord == ERR_NO_SUCH_ROOTS)
-				chordStr = L"Невозможные корни на концах интервала";
-			else
-				chordStr = doubleToWStringW(this->chord, 18);
+			chordStr = doubleToWStringW(this->chord, 18);
 
 			::TextOutW(hdc, 10, 50, L"Граница A = ", ::lstrlenW(L"Граница A = "));
 			::TextOutW(hdc, 10, 75, L"Граница B = ", ::lstrlenW(L"Граница B = "));
@@ -120,7 +92,6 @@ LRESULT CALLBACK Expression::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 			break;
 	}
 }
-
 LRESULT CALLBACK Expression::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (static_cast<Expression::PageInteraction>(LOWORD(wParam)))
@@ -164,7 +135,6 @@ LRESULT CALLBACK Expression::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, 
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 }
-
 void Expression::ShowHWND(int nCmdShow) const
 {
 	ShowWindow(this->ExpressionWnd, nCmdShow);

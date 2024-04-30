@@ -7,12 +7,7 @@ Graphics::Graphics(HWND &mnHwnd, HINSTANCE &hInstance)
 
 	this->initNativeObj();
 	this->createNativeControls();
-
-	if (!SetWindowLongPtr(this->GraphicsWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this)))
-		if (GetLastError() != 0)
-			throw runtime_error("Can't register window pointer");
 }
-
 void Graphics::initNativeObj()
 {
 	WNDCLASSEXW GraphicsClass{ sizeof(WNDCLASSEXW) };
@@ -24,7 +19,7 @@ void Graphics::initNativeObj()
 	GraphicsClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 	GraphicsClass.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
 	GraphicsClass.hInstance = this->hInstance;
-	GraphicsClass.lpfnWndProc = this->GraphicsProc;
+	GraphicsClass.lpfnWndProc = this->windowProc;
 	GraphicsClass.lpszClassName = this->ClassName.c_str();
 	GraphicsClass.lpszMenuName = nullptr;
 	GraphicsClass.style = 0;
@@ -37,28 +32,11 @@ void Graphics::initNativeObj()
 		(GetSystemMetrics(SM_CYSCREEN) - this->height) / 2u,
 		this->width, this->height,
 		this->mnWnd, nullptr, this->hInstance, this);
-
-	if (this->GraphicsWnd == INVALID_HANDLE_VALUE)
-		throw runtime_error("Unable to create main window"s);
 }
-
 void Graphics::createNativeControls()
 {
 	this->hdc = GetDC(this->GraphicsWnd);
 }
-
-LRESULT CALLBACK Graphics::GraphicsProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	Graphics* hGraphics = reinterpret_cast<Graphics*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
-	if (hGraphics)
-	{
-		hGraphics->GraphicsWnd = hwnd;
-		return hGraphics->windowProc(hwnd, uMsg, wParam, lParam);
-	}
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
 LRESULT CALLBACK Graphics::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -82,59 +60,6 @@ LRESULT CALLBACK Graphics::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			EndPaint(hwnd, &ps);
 			break;
 		}
-
-		case WM_KEYDOWN:
-		{
-			switch (wParam)
-			{
-				case VK_ADD:
-				{
-					this->scale += 10;
-					InvalidateRect(hwnd, NULL, TRUE);
-					break;
-				}
-
-				case VK_OEM_PLUS:
-				{
-					this->scale += 10;
-					InvalidateRect(hwnd, NULL, TRUE);
-					break;
-				}
-
-				case VK_SUBTRACT:
-				{
-					if(this->scale >= 11)
-						this->scale -= 10;
-					InvalidateRect(hwnd, NULL, TRUE);
-					break;
-				}
-
-				case VK_OEM_MINUS:
-				{
-					if (this->scale >= 11)
-						this->scale -= 10;
-					InvalidateRect(hwnd, NULL, TRUE);
-					break;
-				}
-			}
-			break;
-		}
-
-		case WM_SIZE:
-		{
-			this->width = LOWORD(lParam);
-			this->height = HIWORD(lParam);
-			InvalidateRect(hwnd, NULL, TRUE);
-			break;
-		}
-
-		case WM_CLOSE:
-		{								// App::ButtonsInteraction::DestroyClicked
-			SendMessageW(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->GraphicsWnd));
-			return EXIT_SUCCESS;
-			break;
-		}
-
 		case WM_DESTROY:
 		{
 			SendMessageW(this->mnWnd, WM_COMMAND, LOWORD(1555), reinterpret_cast<LPARAM>(this->GraphicsWnd));
@@ -148,10 +73,7 @@ LRESULT CALLBACK Graphics::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			break;
 		}
 	}
-
-	return TRUE;
 }
-
 void Graphics::DrawAxes() 
 {
 	MoveToEx(this->hdc, 0, this->height / 2, NULL); // Y
@@ -204,11 +126,8 @@ void Graphics::DrawAxes()
 	SetBkColor(this->hdc, this->color::Black);
 	SetTextColor(this->hdc, this->color::White);
 	TextOutW(this->hdc, this->width - 10, this->height / 2 - 22, L"X", lstrlenW(L"X"));
-	//TextOutW(this->hdc, 10, 10, L"X", lstrlenW(L"X"));
 	TextOutW(this->hdc, this->width / 2 + 8, 0, L"Y", lstrlenW(L"Y"));
 }
-
-#pragma warning(disable: 4244)
 void Graphics::DrawGraph() 
 {
 	if (this->graphData.size() == 0)
@@ -253,10 +172,8 @@ void Graphics::DrawGraph()
 		}
 	}
 }
-
 void Graphics::ShowHWND(int nCmdShow) const
 {
 	ShowWindow(this->GraphicsWnd, nCmdShow);
-
 	UpdateWindow(this->GraphicsWnd);
 }

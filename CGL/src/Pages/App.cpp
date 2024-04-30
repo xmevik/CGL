@@ -1,6 +1,5 @@
 ﻿#include <Windows.h>
 #include <commctrl.h>
-
 #include "headers/App.h"
 #include "headers/Table.h"
 #include "headers/Expression.h"
@@ -9,11 +8,8 @@
 #include "headers/ScreenSaver.h"
 #include "resource.h"
 
-
 App::App(HINSTANCE hInstance)
 {
-	using namespace std;
-
 	try
 	{
 		this->hInstance = hInstance;
@@ -32,8 +28,6 @@ App::App(HINSTANCE hInstance)
 
 int App::Run() const
 {
-	HACCEL hAccelTable = LoadAcceleratorsW(this->hInstance, L"nullptr");
-
 	MSG _msg{};
 
 	ShowWindow(this->Wnd, SW_SHOWDEFAULT);
@@ -41,20 +35,14 @@ int App::Run() const
 
 	while (GetMessage(&_msg, nullptr, 0, 0))
 	{
-		if (!TranslateAccelerator(_msg.hwnd, hAccelTable, &_msg))
-		{
-			TranslateMessage(&_msg);
-			DispatchMessage(&_msg);
-		}
+		TranslateMessage(&_msg);
+		DispatchMessage(&_msg);
 	}
 
 	return static_cast<int>(_msg.wParam);
 }
-
 void App::initNativeWindowObj()
 {
-	using std::runtime_error;
-
 	WNDCLASSEXW mainClass = { sizeof(WNDCLASSEXW) };
 
 	mainClass.cbClsExtra = 0;
@@ -64,7 +52,7 @@ void App::initNativeWindowObj()
 	mainClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 	mainClass.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
 	mainClass.hInstance = this->hInstance;
-	mainClass.lpfnWndProc = this->applicationProc;
+	mainClass.lpfnWndProc = this->windowProc;
 	mainClass.lpszClassName = this->ClassName.c_str();
 	mainClass.lpszMenuName = nullptr;
 	mainClass.style = 0;
@@ -82,7 +70,6 @@ void App::initNativeWindowObj()
 	if (this->Wnd == INVALID_HANDLE_VALUE)
 		throw runtime_error("Unable to create main window"s);
 }
-
 void App::createNativeWindowControls()
 {
 	const auto buttonXY = buttonDefaultClientXY(widht, height);
@@ -117,77 +104,13 @@ void App::createNativeWindowControls()
 
 	if (!this->TableButton || !this->GraphicsButton || !this->ExpressionButton || !this->IntegralButton || !this->ScreenSaverButton || !this->AboutButton || !this->ExitButton)
 		throw runtime_error("Error, can't create some of the button");
-
-	HFONT hFont = CreateFontW(18, 0, 0, 0, FW_REGULAR, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Aldrich");
-
-	SendMessageW(this->TableButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessageW(this->GraphicsButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessageW(this->ExpressionButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessageW(this->IntegralButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessageW(this->ScreenSaverButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessageW(this->AboutButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessageW(this->ExitButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
 }
-
-LRESULT CALLBACK App::applicationProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	App* hApp;
-	if (uMsg == WM_CREATE)
-	{
-		hApp = static_cast<App*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
-
-		SetLastError(0);
-		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(hApp)))
-			if (GetLastError() != 0)
-					return false;
-	}
-	else
-		hApp = reinterpret_cast<App*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
-	if (hApp)
-	{
-		hApp->Wnd = hwnd;
-		return hApp->windowProc(hwnd, uMsg, wParam, lParam);
-	}
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
 LRESULT CALLBACK App::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
 		case WM_COMMAND:
 			return handleCommand(hwnd, uMsg, wParam, lParam);
-		case WM_SIZE:
-		{
-			ButtonPosResize(hwnd, lParam);
-			UpdateWindow(hwnd);
-
-			return TRUE;
-		}
-		// Трюк ниже позволяет перетаскивать окно за любую его часть.
-		case WM_LBUTTONDOWN: // Ловим нажатие ЛКМ.
-		{
-			// Отправляемое сообщение буквально значит "нажата ЛКМ на заголовке окна".
-			::SendMessageW(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);
-			break;
-		}
-		case WM_MOVING:
-		{
-			static const ::HCURSOR cursor{
-				::LoadCursorW(nullptr, IDC_SIZEALL)
-			};
-
-			::SetCursor(cursor);
-			break;
-		}
-		case WM_CLOSE:
-		{
-			if (MessageBoxW(hwnd, L"Вы действительно хотите выйти?", L"Close application", MB_OKCANCEL) == IDOK)
-				DestroyWindow(hwnd);
-
-			return EXIT_SUCCESS;
-		}
 		case WM_DESTROY:
 		{
 			PostQuitMessage(EXIT_SUCCESS);
@@ -197,9 +120,7 @@ LRESULT CALLBACK App::windowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 			break;
 	}
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
-
 LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (static_cast<App::ButtonsInteraction>(LOWORD(wParam)))
@@ -272,44 +193,11 @@ LRESULT CALLBACK App::handleCommand(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 				}
 			return EXIT_SUCCESS;
 		}
-		case App::ButtonsInteraction::DestroyScreenSaver:
-		{
-			DestroyWindow(reinterpret_cast<HWND>(lParam));
-
-			return TRUE;
-		}
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 			break;
 	}
 }
-
-pair<UINT, UINT> App::buttonDefaultClientXY(UINT Widht, UINT Height)
-{
-	this->widht = Widht;
-	this->height = Height;
-
-	const UINT x = this->widht / 2 - (this->buttonWindowWidht / 2);
-	const UINT y = this->height / 2 - (this->buttonWindowHeight * 5);
-
-	return make_pair(x, y);
-}
-
-void App::ButtonPosResize(HWND hwnd, LPARAM lParam)
-{
-	int widht = LOWORD(lParam);
-	int height = HIWORD(lParam);
-	const auto buttonXY = buttonDefaultClientXY(LOWORD(lParam), HIWORD(lParam));
-
-	SetWindowPos(this->TableButton, HWND_TOP, buttonXY.first, buttonXY.second, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-	SetWindowPos(this->GraphicsButton, HWND_TOP, buttonXY.first, buttonXY.second + buttonWindowHeight * 1 + 5, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-	SetWindowPos(this->ExpressionButton, HWND_TOP, buttonXY.first, buttonXY.second + buttonWindowHeight * 2 + 10, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-	SetWindowPos(this->IntegralButton, HWND_TOP, buttonXY.first, buttonXY.second + buttonWindowHeight * 3 + 15, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-	SetWindowPos(this->ScreenSaverButton, HWND_TOP, buttonXY.first, buttonXY.second + buttonWindowHeight * 4 + 20, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-	SetWindowPos(this->AboutButton, HWND_TOP, buttonXY.first, buttonXY.second + buttonWindowHeight * 5 + 25, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-	SetWindowPos(this->ExitButton, HWND_TOP, buttonXY.first, buttonXY.second + buttonWindowHeight * 6 + 30, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-}
-
 LRESULT CALLBACK App::AboutProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	UNREFERENCED_PARAMETER(lParam);

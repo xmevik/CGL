@@ -5,16 +5,14 @@
 
 const int N = 1000000;
 
-// Функция под интегралом
 static double funcI(double x) 
 {
     return x*x*log10(x);
 }
 
-// Функция численного интегрирования методом трапеций
 static double trapezoidalIntegral(int a, int b) 
 {
-    double h = (static_cast<double>(b) - a) / N; // Шаг интегрирования
+    double h = (static_cast<double>(b) - a) / N;
     double integral = 0.5 * (funcI(a) + funcI(b));
 
     for (int i = 1; i < N; ++i) {
@@ -26,7 +24,6 @@ static double trapezoidalIntegral(int a, int b)
     return integral;
 }
 
-// Функция численного интегрирования методом Симпсона
 static double simpsonIntegral(int a, int b) 
 {
     double h = (static_cast<double>(b) - a) / N;
@@ -46,7 +43,6 @@ static double simpsonIntegral(int a, int b)
     return integral;
 }
 
-// Функция численного интегрирования методом средних прямоугольников
 static double midpointIntegral(int a, int b) 
 {
     double h = (static_cast<double>(b) - a) / N;
@@ -59,11 +55,4 @@ static double midpointIntegral(int a, int b)
 
     integral *= h;
     return integral;
-}
-
-static std::wstring doubleToWString(double value, int precision)
-{
-    std::wstringstream stream;
-    stream << std::fixed << std::setprecision(precision) << value;
-    return stream.str();
 }
